@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dmac1.twoeagleranch.MainActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout style="@style/titleContainer">
+
+        <ImageView
+            style="@style/titleImage"
+            android:contentDescription="@string/biz_name"
+            android:src="@drawable/home" />
+
+        <TextView
+            style="@style/title"
+            android:text="@string/biz_name" />
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/mpwc"
+        android:textStyle="bold"
+        android:text="@string/biz_description"/>
+
+    <TextView
+        style="@style/mpwc"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="@string/biz_details"/>
+
+    <TextView
+        style="@style/officeDetails"
+        android:text="@string/office_hours" />
+
+    <TextView
+        style="@style/officeDetails"
+        android:autoLink="email"
+        android:text="@string/email" />
+
+    <TextView
+        style="@style/officeDetails"
+        android:autoLink="phone"
+        android:text="@string/phone" />
+
+    <TextView
+        style="@style/officeDetails"
+        android:autoLink="map"
+        android:text="@string/street_address" />
+
+</LinearLayout>

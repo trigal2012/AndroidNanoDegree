@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="biz_description">Two Eagle Ranch es un rancho de trabajo que se especializa en la cría, el abordaje y la capacitación de los caballos de corte de la NCHA.</string>
+    <string name="biz_details">Los servicios incluyen sesiones de trabajo realizadas por nuestros capacitadores experimentados, así como alquiler de instalaciones por día / semana / mes, donde puede pagar por uso de puestos, uso de bolígrafos redondos, ayudas automáticas de entrenamiento, prácticas de crías en vivo, y mucho más. !</string>
+    <string name="office_hours">" Horario de atención: de 9 a.m. a 6 p.m. (lunes a sábado)"</string>
+    <string name="email">Email: Info@TwoEagleRanch.com</string>
+</resources>
