@@ -1,26 +1,10 @@
 <resources>
-    <string name="app_name" translatable="false">TwoEagleRanch</string>
-    <string name="biz_name" translatable="false">Two Eagle Ranch</string>
-    <string name="biz_description">Two Eagle Ranch is a working ranch specializing in breeding, boarding, and training of NCHA cutting horses.</string>
-    <string name="phone" translatable="false">Phone: 555-555-5555</string>
-    <string name="street_address" translatable="false">657 Butler Road, Point Blank, TX, 77364</string>
+    <string name="app_name">TwoEagleRanch</string>
+    <string name="biz_name">Two Eagle Ranch</string>
+    <string name="biz_description">Two Eagle Ranch specializes in the breeding, boarding, and training of NCHA cutting horses.</string>
+    <string name="phone">Phone: 555–555-5555</string>
+    <string name="street_address">657 Butler Road, Point Blank, TX, 77364</string>
     <string name="email">Email: Info@TwoEagleRanch.com</string>
     <string name="office_hours">Office Hours: 9am-6pm (Mon-Sat)</string>
-    <string name="biz_details">Services include:</string>
-
-    <string-array name="servicesList1">
-        <item>\n\u2022 working sessions by our experienced trainers</item>
-        <item>\n\u2022 facility rentals by the day/week/month</item>
-
-    </string-array>
-
-    <string-array name="servicesList2">
-        <item>\n\u2022 rent stalls, round pen, eTrainer</item>
-        <item>\n\u2022 Affordable 'Cowboy' Apartments</item>
-    </string-array>
-
-    <string-array name="servicesList3">
-        <item>\n\u2022 live cattle practice</item>
-        <item>\n\u2022 Tack storage</item>
-    </string-array>
+    <string name="biz_details">Services include: training sessions with NCHA trainers, facility rentals by the day/week/month (stalls, round pen, eTrainer), Affordable \'Cowboy\' Apartments, cattle practice, tack rental and storage.</string>
 </resources>

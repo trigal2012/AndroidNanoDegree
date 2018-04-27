@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dmac1.twoeagleranch.MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.dmac1.twoeagleranch.MainActivity">
 
     <RelativeLayout style="@style/titleContainer">
 
@@ -16,19 +15,21 @@
 
         <TextView
             style="@style/title"
+            android:layout_margin="@dimen/margin_medium"
             android:text="@string/biz_name" />
 
     </RelativeLayout>
 
     <TextView
         style="@style/mpwc"
-        android:textStyle="bold"
-        android:text="@string/biz_description"/>
+        android:layout_margin="@dimen/margin_small"
+        android:text="@string/biz_description"
+        android:textStyle="bold" />
 
     <TextView
         style="@style/mpwc"
         android:layout_margin="@dimen/margin_medium"
-        android:text="@string/biz_details"/>
+        android:text="@string/biz_details" />
 
     <TextView
         style="@style/officeDetails"

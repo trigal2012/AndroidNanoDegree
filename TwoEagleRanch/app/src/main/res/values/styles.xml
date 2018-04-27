@@ -10,6 +10,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    //Portrait Styles
     <style name="mpwc" parent="Theme.AppCompat">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -38,11 +39,21 @@
     <style name="titleImage" parent="Theme.AppCompat">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_margin">@dimen/margin_small</item>
+
     </style>
 
     <style name="titleContainer" parent="Theme.AppCompat">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/title_image_phone_portrait</item>
     </style>
+
+    //Landscape styles
+    <style name="mpwc_land" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+
 </resources>

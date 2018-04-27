@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:context="com.example.dmac1.twoeagleranch.MainActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/titleImage"
+            android:contentDescription="@string/biz_name"
+            android:src="@drawable/eaglenest" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/biz_name"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/mpwc_land"
+            android:text="@string/biz_description"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/mpwc_land"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/biz_details" />
+
+        <TextView
+            style="@style/mpwc_land"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:text="@string/office_hours" />
+
+        <TextView
+            style="@style/mpwc_land"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:autoLink="email"
+            android:text="@string/email" />
+
+        <TextView
+            style="@style/mpwc_land"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:autoLink="phone"
+            android:text="@string/phone" />
+
+        <TextView
+            style="@style/mpwc_land"
+            android:autoLink="map"
+            android:text="@string/street_address" />
+
+    </LinearLayout>
+
+</LinearLayout>
