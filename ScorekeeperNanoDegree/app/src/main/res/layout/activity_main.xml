@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:textSize="20sp"
+        android:text="RESET"
+        android:onClick="reset"/>
+
+    <LinearLayout
+        android:id="@+id/team1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/team1_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Team1"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/team1_score"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="100"
+            android:gravity="center"
+            android:textSize="60sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/team1_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="+1 Point"
+            android:onClick="team1_button1"/>
+
+        <Button
+            android:id="@+id/team1_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="I feel Lucky"
+            android:tooltipText="score up to 20 points or loose up to 5 points"
+            android:onClick="team1_button2"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/team2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/team2_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Team2"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/team2_score"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="100"
+            android:gravity="center"
+            android:textSize="60sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/team2_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="+1 Point"
+            android:onClick="team2_button1"/>
+
+        <Button
+            android:id="@+id/team2_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="I feel Lucky"
+            android:tooltipText="score up to 20 points or loose up to 5 points"
+            android:onClick="team2_button2"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
