@@ -5,8 +5,8 @@
     <dimen name="text_large">40sp</dimen>
 
     //margin sizes
-    <dimen name="margin_small">5sp</dimen>
-    <dimen name="margin_medium">10sp</dimen>
+    <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_medium">10dp</dimen>
 
     //container sizes
     <dimen name="title_image_phone_portrait">234dp</dimen>
