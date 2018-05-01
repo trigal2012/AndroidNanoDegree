@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">ScorekeeperNanoDegree</string>
+    <string name="reset">RESET</string>
+    <string name="team1">Team1</string>
+    <string name="team2">Team2</string>
+    <string name="point1">+1 Point</string>
+    <string name="lucky">I feel Lucky</string>
+    <string name="btn2ToolTip">score up to 20 points or loose up to 5 points</string>
+    <string name="score">8</string>
+
+    //Toast Message Strings
+    <string name="lost1pt">bummer, you lost 1 point :-(</string>
+    <string name="win1pt">luck is on your side, you won 1 point :-)</string>
+    <string name="noWinNoLoss">well, could be worse, you could have lost points</string>
+
+    <!--use when score is -2 to -5 pts-->
+    <string name="lostMorePts">"bummer, you lost %1$d points :-("</string>
+
+    <!--use when score is 2 pts or higher -->
+    <string name="wonMorePts">"luck is on your side, you won %1$d points :-)"</string>
+
 </resources>

@@ -10,12 +10,13 @@ import android.view.LayoutInflater;
 
 public class MainActivity extends AppCompatActivity {
 
+    //initialize variables
     int team1_score = 0;
     int team2_score = 0;
     int team1ViewId = 0;
     int team2ViewId = 0;
 
-
+    //save values on screen rotation
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("team1_score", team1_score);
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    //on create method, runs when app starts
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (savedInstanceState != null){
@@ -77,20 +79,11 @@ public class MainActivity extends AppCompatActivity {
     //returns a random number between -5 and 20
     private int lucky(){
         int tmpNum = (int )(Math.random() * 20 + -5);
-        if (tmpNum == -1) {
-            displayToast("bummer, you lost " + tmpNum * -1 + " point :-(");
-        } else if (tmpNum < -1){
-            displayToast("bummer, you lost " + tmpNum * -1 + " points :-(");
-        }else if(tmpNum == 0){
-            displayToast("well, could be worse, you could have lost points");
-        }else if (tmpNum == 1){
-            displayToast("luck is on your side, you won " + tmpNum + " point :-)");
-        }else{
-            displayToast("luck is on your side, you won " + tmpNum + " points :-)");
-        }
+        toastMsg(tmpNum);
         return tmpNum;
     }
 
+    //resets score to zero
     public void reset(View view){
         team1_score = 0;
         team2_score = 0;
@@ -98,14 +91,32 @@ public class MainActivity extends AppCompatActivity {
         updateDisplay(team2ViewId, team2_score);
     }
 
+    //used to update the score view
     private void updateDisplay(Integer team, Integer score){
         TextView scoreView = findViewById(team);
         String score2String = Integer.toString(score);
         scoreView.setText(score2String);
     }
 
+    //determine toast message based on the results of "I feel lucky"
+    private void toastMsg(int tmpNum){
+        String toastMessage = "";
+        if (tmpNum == -1) {
+            toastMessage = getResources().getString(R.string.lost1pt);
+        } else if (tmpNum < -1){
+            tmpNum = tmpNum * -1;
+            toastMessage = getResources().getString(R.string.lostMorePts,tmpNum);
+        }else if(tmpNum == 0){
+            toastMessage = getResources().getString(R.string.noWinNoLoss);
+        }else if (tmpNum == 1){
+            toastMessage = getResources().getString(R.string.win1pt);
+        }else{
+            toastMessage = getResources().getString(R.string.wonMorePts, tmpNum);
+        }
+        displayToast(toastMessage);
+    }
 
-    //toast message creation and update based on results of lucky method
+    //method to display the toast message, uses a toast layout file
     private void displayToast(String message){
 
         //get the LayoutInflater and inflate the custom_toast layout
@@ -113,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         View layout = inflater.inflate(R.layout.toast, null);
 
         //get the TextView from the custom_toast layout
-        TextView text = (TextView) layout.findViewById(R.id.txtMessage);
+        TextView text = layout.findViewById(R.id.txtMessage);
         text.setText(message);
 
         //create the toast object, set display duration,
@@ -123,5 +134,4 @@ public class MainActivity extends AppCompatActivity {
         toast.setView(layout);
         toast.show();
     }
-
 }
