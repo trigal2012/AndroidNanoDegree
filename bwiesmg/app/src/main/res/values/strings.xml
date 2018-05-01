@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">bwiesmg</string>
+
+
+    <string-array name="categories">
+        <item>All Categories</item>
+        <item>Culture</item>
+        <item>Entrepreneuership</item>
+        <item>General</item>
+        <item>Migrant</item>
+        <item>Personal development</item>
+        <item>Refugee</item>
+        <item>Woman's Rights</item>
+        <item>Education</item>
+        <item>Families</item>
+        <item>Health</item>
+        <item>Network</item>
+        <item>Racism</item>
+        <item>Violence</item>
+    </string-array>
+</resources>
