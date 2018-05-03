@@ -1,0 +1,35 @@
+<resources>
+
+    //application name
+    <string name="app_name">QuizApp</string>
+
+    //component placeholder strings
+    <string name="answer_hint">provide answer here</string>
+    <string name="checkbox_text">checkbox placeholder text</string>
+    <string name="radiobutton_text">radio button placeholder text</string>
+    <string name="question_text">question placeholder text</string>
+
+    //questions for Math
+    <string-array name="math_questions">
+        <item>What is 1 + 1?</item>
+        <item>What is 236 + 52?</item>
+        <item>What is 459 + -752?</item>
+    </string-array>
+
+    //radio button answer arrays
+        //radio button 1 answer options
+        <string-array name="radio_button_1">
+            <item>20</item>
+            <item>152</item>
+            <item>45</item>
+        </string-array>
+
+
+        //radio button 2 answer options
+        <string-array name="radio_button_2">
+            <item>3</item>
+            <item>99</item>
+            <item>162</item>
+        </string-array>
+
+</resources>
