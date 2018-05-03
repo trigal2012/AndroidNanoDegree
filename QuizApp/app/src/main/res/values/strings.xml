@@ -8,12 +8,12 @@
     <string name="checkbox_text">checkbox placeholder text</string>
     <string name="radiobutton_text">radio button placeholder text</string>
     <string name="question_text">question placeholder text</string>
+    <string name="submit">SUBMIT</string>
 
     //questions for Math
     <string-array name="math_questions">
-        <item>What is 1 + 1?</item>
-        <item>What is 236 + 52?</item>
         <item>What is 459 + -752?</item>
+        <item>What is 351 + 67?</item>
     </string-array>
 
     //radio button answer arrays
