@@ -5,4 +5,4 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
     android:hint="@string/answer_hint"
-    android:inputType="text"/>
+    android:inputType="numberSigned"/>

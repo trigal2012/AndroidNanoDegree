@@ -9,8 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout titleRow;
     String a1;
     int a2;
+
+    int[] correctAnswers={-253, 300};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,12 @@ public class MainActivity extends AppCompatActivity {
         answers[0] = a1;
         answers[1] = Integer.toString(a2);
 
+        Integer.parseInt(a1);
+        Log.i("my tag", "a1 answer is: " + a1);
+
         Log.i("my tag", "my array: " + Arrays.toString(answers));
+
+        //compare arrays
 
 
     }
@@ -122,7 +127,9 @@ public class MainActivity extends AppCompatActivity {
         int rgId = 201;
         RadioGroup radioGroup = findViewById(rgId);
         int selectedId = radioGroup.getCheckedRadioButtonId();
-        return selectedId;
+       String radiovalue = ((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+        Log.i("my tag", "value is: " + radiovalue);
+       return selectedId;
     }
 
 }

@@ -19,7 +19,7 @@
     //radio button answer arrays
         //radio button 1 answer options
         <string-array name="radio_button_1">
-            <item>20</item>
+            <item>418</item>
             <item>152</item>
             <item>45</item>
         </string-array>
