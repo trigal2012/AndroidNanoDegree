@@ -9,11 +9,17 @@
         android:id="@+id/list"
         style="@style/linear_parent">
 
+        <TextView
+            android:id="@+id/question0"
+            style="@style/text_medium"
+            android:text="@string/question0"/>
+
         <EditText
-            android:id="@+id/playername"
+            android:id="@+id/answer0"
             style="@style/edit_text_base"
-            android:hint="@string/player_name"
-            android:textColorHint="@color/colorWhite" />
+            android:hint="@string/answer_here"
+            android:textColorHint="@color/black"
+            android:inputType="text"/>
 
         <TextView
             android:id="@+id/question1"

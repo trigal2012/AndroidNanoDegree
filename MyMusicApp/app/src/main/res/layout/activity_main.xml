@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondaryLightColor"
+    android:orientation="vertical"
+    tools:context="com.example.dmac1.mymusicapp.MainActivity">
+
+    <TextView
+        android:id="@+id/literature"
+        style="@style/CategoryStyle"
+        android:background="@color/category_literature"
+        android:text="@string/category_literature" />
+
+    <TextView
+        android:id="@+id/math"
+        style="@style/CategoryStyle"
+        android:background="@color/category_math"
+        android:text="@string/category_math" />
+
+    <TextView
+        android:id="@+id/history"
+        style="@style/CategoryStyle"
+        android:background="@color/category_history"
+        android:text="@string/category_history" />
+</LinearLayout>

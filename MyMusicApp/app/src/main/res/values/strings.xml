@@ -1,0 +1,22 @@
+<resources>
+    <!-- Title for the application. -->
+    <string name="app_name">My Subjects</string>
+
+    <!-- Category name for math lectures -->
+    <string name="category_math">Math Lessons</string>
+
+    <!-- Category name for history lectures -->
+    <string name="category_history">History Lessons</string>
+
+    <!-- Category name for literature lectures -->
+    <string name="category_literature">Literature Lessons</string>
+
+    <string name="lesson_details">Lesson Details</string>
+
+    <string name="lesson_duration">Duration: </string>
+
+    <string name="lesson_description">Lesson Description: </string>
+
+    <string name="title_activity_math">MathActivity</string>
+
+</resources>

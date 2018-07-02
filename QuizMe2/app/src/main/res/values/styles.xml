@@ -1,0 +1,96 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="linear_parent" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_margin">@dimen/margin_small</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="radiogroup" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/layout_smallMedium</item>
+    </style>
+
+    <style name="radioButton" parent="Theme.AppCompat">
+        <item name="android:layout_width">@dimen/layout_large</item>
+        <item name="android:layout_height">@dimen/layout_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="checkbox" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/layout_medium</item>
+        <item name="android:layout_marginLeft">@dimen/layout_small</item>
+        <item name="android:padding">@dimen/padding_xsmall</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_base" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="text_small" parent="text_base">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="text_medium" parent="text_base">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="text_large" parent="text_base">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="edit_text_base" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
+    <style name="action_button" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:layout_marginTop">@dimen/layout_xsmall</item>
+        <item name="android:layout_marginBottom">@dimen/layout_smallMedium</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="toast" parent="Theme.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:drawablePadding">@dimen/padding_xsmall</item>
+        <item name="android:layout_margin">@dimen/margin_small</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+</resources>

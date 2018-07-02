@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/media_root"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/media_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="media title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        style="@style/CategoryStyle" />
+
+    <TextView
+        android:id="@+id/media_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="media status"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        style="@style/CategoryStyle" />
+
+    <TextView
+        android:id="@+id/media_length_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lesson_duration"
+        android:layout_below="@+id/media_title"
+        style="@style/CategoryStyle" />
+
+    <TextView
+        android:id="@+id/media_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="media length"
+        android:layout_below="@+id/media_status"
+        android:layout_toRightOf="@id/media_length_label"
+        style="@style/CategoryStyle" />
+
+    <TextView
+        android:id="@+id/media_description_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media_length_label"
+        android:text="@string/lesson_description"
+        style="@style/CategoryStyle" />
+
+    <TextView
+        android:id="@+id/media_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media_description_label"
+        tools:text="media description"
+        style="@style/CategoryStyle" />
+
+    <ImageView
+        android:id="@+id/media_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/twotone_play_circle_filled_black_48"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/media_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/twotone_pause_circle_filled_black_48"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible" />
+</RelativeLayout>

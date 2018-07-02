@@ -49,6 +49,10 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
+    <style name="text_small" parent="text_base">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
     <style name="text_medium" parent="text_base">
         <item name="android:textSize">@dimen/text_medium</item>
     </style>

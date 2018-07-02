@@ -1,0 +1,27 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<resources>
+    <color name="primaryColor">#4fc3f7</color>
+    <color name="primaryLightColor">#8bf6ff</color>
+    <color name="primaryDarkColor">#0093c4</color>
+    <color name="secondaryColor">#4dd0e1</color>
+    <color name="secondaryLightColor">#88ffff</color>
+    <color name="secondaryDarkColor">#009faf</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <!-- Background color for app -->
+    <color name="light_green_background">#88ffff</color>
+
+    <!-- Background color for the numbers category -->
+    <color name="category_math">#00838f</color>
+
+    <!-- Background color for the family members category -->
+    <color name="category_literature">#4fb3bf</color>
+
+    <!-- Background color for the colors category -->
+    <color name="category_finance">#80deea</color>
+
+    <!-- Background color for the phrases category -->
+    <color name="category_history">#005662</color>
+
+</resources>
