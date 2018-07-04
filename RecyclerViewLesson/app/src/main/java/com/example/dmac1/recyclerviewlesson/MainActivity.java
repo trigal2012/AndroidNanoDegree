@@ -4,100 +4,218 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
-// COMPLETED (8) Implement GreenAdapter.ListItemClickListener from the MainActivity
-public class MainActivity extends AppCompatActivity
-        implements GreenAdapter.ListItemClickListener {
+import java.util.ArrayList;
+import java.util.List;
 
-    /*
-     * References to RecyclerView and Adapter to reset the list to its
-     * "pretty" state when the reset menu item is clicked.
-     */
-    private GreenAdapter mAdapter;
-    private RecyclerView mNumbersList;
+public class MainActivity extends AppCompatActivity {
 
-    // COMPLETED (9) Create a Toast variable called mToast to store the current Toast
-    /*
-     * If we hold a reference to our Toast, we can cancel it (if it's showing)
-     * to display a new Toast. If we didn't do this, Toasts would be delayed
-     * in showing up if you clicked many list items in quick succession.
-     */
-    private Toast mToast;
+    // step 13 from the Product Adapter Class
+    RecyclerView recyclerView;
+    ProductAdapter adapter;
+    List<Product> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-         * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
-         * do things like set the adapter of the RecyclerView and toggle the visibility.
-         */
-        mNumbersList = (RecyclerView) findViewById(R.id.rv_numbers);
+        // step 13
+        productList = new ArrayList<>();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
 
-        /*
-         * A LinearLayoutManager is responsible for measuring and positioning item views within a
-         * RecyclerView into a linear list. This means that it can produce either a horizontal or
-         * vertical list depending on which parameter you pass in to the LinearLayoutManager
-         * constructor. By default, if you don't specify an orientation, you get a vertical list.
-         * In our case, we want a vertical list, so we don't need to pass in an orientation flag to
-         * the LinearLayoutManager constructor.
-         *
-         * There are other LayoutManagers available to display your data in uniform grids,
-         * staggered grids, and more! See the developer documentation for more details.
-         */
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mNumbersList.setLayoutManager(layoutManager);
+        // step 14
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /*
-         * Use this setting to improve performance if you know that changes in content do not
-         * change the child layout size in the RecyclerView
-         */
-        mNumbersList.setHasFixedSize(true);
+        // step 16 and 17
+        adapter = new ProductAdapter(this, productList);
+        recyclerView.setAdapter(adapter);
 
-        // COMPLETED (13) Pass in this as the ListItemClickListener to the GreenAdapter constructor
-        /*
-         * The GreenAdapter is responsible for displaying each item in the list.
-         */
-        mAdapter = new GreenAdapter(50, this);
-        mNumbersList.setAdapter(mAdapter);
-    }
+        // step 15 adding some items to the product list
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
 
-    // COMPLETED (10) Override ListItemClickListener's onListItemClick method
-    /**
-     * This is where we receive our callback from
-     * {@link com.example.dmac1.recyclerviewlesson.GreenAdapter.ListItemClickListener}
-     *
-     * This callback is invoked when you click on an item in the list.
-     *
-     * @param clickedItemIndex Index in the list of the item that was clicked.
-     */
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-        // COMPLETED (11) In the beginning of the method, cancel the Toast if it isn't null
-        /*
-         * Even if a Toast isn't showing, it's okay to cancel it. Doing so
-         * ensures that our new Toast will show immediately, rather than
-         * being delayed while other pending Toasts are shown.
-         *
-         * Comment out these three lines, run the app, and click on a bunch of
-         * different items if you're not sure what I'm talking about.
-         */
-        if (mToast != null) {
-            mToast.cancel();
-        }
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
 
-        // COMPLETED (12) Show a Toast when an item is clicked, displaying that item number that was clicked
-        /*
-         * Create a Toast and store it in our Toast field.
-         * The Toast that shows up will have a message similar to the following:
-         *
-         *                     Item #42 clicked.
-         */
-        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
 
-        mToast.show();
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+        productList.add(
+                new Product(
+                        1,
+                        "Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Dell Inspiron 7000 Core i5 7th Gen - (8 GB/1 TB HDD/Windows 10 Home)",
+                        "14 inch, Gray, 1.659 kg",
+                        4.3,
+                        60000));
+
+        productList.add(
+                new Product(
+                        1,
+                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
+                        "13.3 inch, Silver, 1.35 kg",
+                        4.3,
+                        60000));
     }
 }
