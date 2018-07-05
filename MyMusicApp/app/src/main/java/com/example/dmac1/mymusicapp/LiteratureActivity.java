@@ -1,23 +1,52 @@
 package com.example.dmac1.mymusicapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LiteratureActivity extends AppCompatActivity {
+
+    private RecyclerView listingsView;
+    private List<Media> myMedia;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.media_list);
 
-        //*** This next section creates the list of media files that are part of the Literature category ***
-        final ArrayList<Media> myMedia = new ArrayList<Media>();
+        //inflate activity layout
+        setContentView(R.layout.media_list);
+        this.context = this;
+
+        //load media array
+        loadMedia();
+
+        //initialize MediaAdapter
+        MediaAdapter adapter = new MediaAdapter(this, myMedia);
+
+        //initialize RecyclerView layoutManager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        //inflate RecyclerView, tell OS size will not change, set the layoutManager
+        listingsView = (RecyclerView) findViewById(R.id.list);
+        listingsView.setLayoutManager(layoutManager);
+        listingsView.setHasFixedSize(true);
+
+        //attach adapter to the RecyclerView
+        listingsView.setAdapter(adapter);
+    }
+
+    private void loadMedia() {
+        myMedia = new ArrayList<>();
         myMedia.add(new Media("Pride and Prejudice", "00:05:00", "Lorem ipsum dolor sit amet, " +
                 "consectetur adipiscing elit. Vivamus ullamcorper magna at turpis consequat, " +
                 "vitae ultrices ex commodo. Etiam ultrices tempus felis, sed pretium urna eleifend " +
@@ -60,32 +89,5 @@ public class LiteratureActivity extends AppCompatActivity {
                 "nisi nisi tincidunt elit, eget condimentum mi tortor id turpis. Maecenas ut fermentum dui. " +
                 "Integer eget facilisis dolor. Class aptent taciti sociosqu ad litora torquent per " +
                 "conubia nostra, per inceptos himenaeos.", ""));
-
-        // Create an {@link MediaAdapter}, whose data source is a list of {@link Media}. The
-        // adapter knows how to create list items for each item in the list.
-        MediaAdapter adapter = new MediaAdapter(this, myMedia);
-
-        // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called list, which is declared in the
-        // list_items.xml layout file.
-        ListView listView = findViewById(R.id.list);
-
-        // Make the {@link ListView} use the {@link MediaAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Media} in the list.
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                // get media specific details then start the media details activity
-                Intent mediaDetailsIntent = new Intent(LiteratureActivity.this, MediaDetailsActivity.class);
-                mediaDetailsIntent.putExtra("mediaTitle", myMedia.get(position).getMediaTitle());
-                mediaDetailsIntent.putExtra("mediaLength", myMedia.get(position).getMediaLength());
-                mediaDetailsIntent.putExtra("mediaStatus", myMedia.get(position).getMediaStatus());
-                mediaDetailsIntent.putExtra("mediaDescription", myMedia.get(position).getMediaDescription());
-                startActivity(mediaDetailsIntent);
-            }
-        });
-        //******** End of media files list creation ****
     }
 }
