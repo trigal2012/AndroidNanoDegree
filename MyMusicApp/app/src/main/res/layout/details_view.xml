@@ -12,7 +12,7 @@
         android:id="@+id/media_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="media title"
+        tools:text="@string/media_title"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         style="@style/CategoryStyle" />
@@ -21,7 +21,7 @@
         android:id="@+id/media_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="media status"
+        tools:text="@string/media_status"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         style="@style/CategoryStyle" />
@@ -30,7 +30,7 @@
         android:id="@+id/media_length_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lesson_duration"
+        android:text="@string/media_duration"
         android:layout_below="@+id/media_title"
         style="@style/CategoryStyle" />
 
@@ -38,7 +38,7 @@
         android:id="@+id/media_length"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="media length"
+        tools:text="@string/media_length"
         android:layout_below="@+id/media_status"
         android:layout_toRightOf="@id/media_length_label"
         style="@style/CategoryStyle" />
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/media_length_label"
-        android:text="@string/lesson_description"
+        android:text="@string/media_description"
         style="@style/CategoryStyle" />
 
     <TextView
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/media_description_label"
-        tools:text="media description"
+        tools:text="@string/media_details"
         style="@style/CategoryStyle" />
 
     <ImageView

@@ -2,21 +2,30 @@
     <!-- Title for the application. -->
     <string name="app_name">My Subjects</string>
 
-    <!-- Category name for math lectures -->
+    <!-- Activity Names -->
+    <string name="title_activity_math">MathActivity</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_literature">LiteratureActivity</string>
+
+    <!-- Category names -->
     <string name="category_math">Math Lessons</string>
-
-    <!-- Category name for history lectures -->
     <string name="category_history">History Lessons</string>
-
-    <!-- Category name for literature lectures -->
     <string name="category_literature">Literature Lessons</string>
 
-    <string name="lesson_details">Lesson Details</string>
+    <!-- Media Details Page -->
+    <string name="media_details_header">Lesson Details</string>
+    <string name="media_title">"Grade 5: Addition: Lesson 2"</string>
+    <string name="media_details">"Lorem ipsum dolor sit amet, " +
+                "consectetur adipiscing elit. Vivamus ullamcorper magna at turpis consequat, " +
+                "vitae ultrices ex commodo. Etiam ultrices tempus felis, sed pretium urna eleifend " +
+                "pulvinar. Morbi viverra vestibulum fringilla. Donec lacinia, eros et varius gravida, " +
+                "nisi nisi tincidunt elit, eget condimentum mi tortor id turpis. Maecenas ut fermentum dui. " +
+                "Integer eget facilisis dolor. Class aptent taciti sociosqu ad litora torquent per " +
+                "conubia nostra, per inceptos himenaeos."</string>
+    <string name="media_status">In Progress</string>
+    <string name="media_duration">Duration: </string>
+    <string name="media_length">00:10:45 </string>
+    <string name="media_description">Lesson Description: </string>
 
-    <string name="lesson_duration">Duration: </string>
-
-    <string name="lesson_description">Lesson Description: </string>
-
-    <string name="title_activity_math">MathActivity</string>
 
 </resources>
