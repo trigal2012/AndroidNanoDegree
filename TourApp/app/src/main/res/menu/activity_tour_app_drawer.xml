@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@mipmap/home"
+            android:title="@string/campbell_ca_95008" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@mipmap/event"
+            android:title="@string/the_haps" />
+        <item
+            android:id="@+id/nav_art"
+            android:icon="@mipmap/art"
+            android:title="@string/art_outside" />
+        <item
+            android:id="@+id/nav_eats"
+            android:icon="@mipmap/eat"
+            android:title="@string/brew_grinds_grub" />
+        <item
+            android:id="@+id/nav_walk"
+            android:icon="@mipmap/walk"
+            android:title="@string/walking_tours" />
+    </group>
+
+</menu>

@@ -1,0 +1,164 @@
+<resources>
+    <string name="app_name">TourApp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- placeholder text for category-->
+    <string name="category_event">Event</string>
+    <string name="category_eat">Eat</string>
+    <string name="category_art">Art</string>
+    <string name="category_walk">Walk</string>
+
+    <string name="date0">07&#8211;21&#8211;2018</string>
+    <string name="date1">07&#8211;23&#8211;2018</string>
+    <string name="date2">07&#8211;29&#8211;2018</string>
+    <string name="date3">07&#8211;30&#8211;2018</string>
+    <string name="date4">08&#8211;01&#8211;2018</string>
+    <string name="date5">08&#8211;03&#8211;2018</string>
+    <string name="date6">08&#8211;10&#8211;2018</string>
+    <string name="date7">08&#8211;15&#8211;2018</string>
+    <string name="date8">08&#8211;21&#8211;2018</string>
+    <string name="date9">09&#8211;10&#8211;2018</string>
+
+    <string name="type">music</string>
+    <string name="type0">music</string>
+    <string name="type1">beer</string>
+    <string name="type2">coffee</string>
+    <string name="type3">pizza</string>
+    <string name="type4">sandwiches</string>
+    <string name="type5">art box</string>
+
+
+    <!-- placeholder text for event names-->
+    <string name="name0">Music in the Park 0</string>
+    <string name="name1">Music in the Park 1</string>
+    <string name="name2">Music in the Park 2</string>
+    <string name="name3">Music in the Park 3</string>
+    <string name="name4">Music in the Park 4</string>
+    <string name="name5">Music in the Park 5</string>
+    <string name="name6">Music in the Park 6</string>
+    <string name="name7">Music in the Park 7</string>
+    <string name="name8">Music in the Park 8</string>
+    <string name="name9">Music in the Park 9</string>
+
+    <!-- placeholder text for  brews, grinds, grubs-->
+    <string name="name10">Murphy\'s Irsh Pub</string>
+    <string name="name11">Starbucks</string>
+    <string name="name12">Orchard Valley Coffee</string>
+    <string name="name13">Pete\'s</string>
+    <string name="name14">Stacks</string>
+    <string name="name15">Dennys</string>
+    <string name="name16">Blue Line Pizza</string>
+    <string name="name17">Psycho Donuts</string>
+    <string name="name18">Sushi Roll</string>
+    <string name="name19">Rock Bottom Brewery</string>
+
+    <!-- placeholder text for  art outside-->
+    <string name="name20">Kids at Play</string>
+    <string name="name21">Heritage Theater</string>
+    <string name="name22">Little League</string>
+    <string name="name23">Orchard Harvest</string>
+    <string name="name24">Owls at Play</string>
+    <string name="name25">Swimming Hole</string>
+    <string name="name26">Midnight Dancing</string>
+    <string name="name27">Driving Miss Daisy</string>
+    <string name="name28">Rock-n-Roll</string>
+    <string name="name29">The Wheels on the bus</string>
+
+    <!-- placeholder text for  walking tours-->
+    <string name="name30">Heritage Theater</string>
+    <string name="name31">Ainsley House Museum</string>
+    <string name="name32">2nd Ainsley Home</string>
+    <string name="name33">1st Ainsley Home</string>
+    <string name="name34">Lena Swope French House</string>
+    <string name="name35">Washington Tree</string>
+    <string name="name36">Campbell Rodeck House</string>
+    <string name="name37">Farmer’s Union Packing House </string>
+    <string name="name38">B.O. Curry Building</string>
+    <string name="name39">South Pacific Coast/Union Pacific Railroad</string>
+
+    <string name="phone">555&#8211;555&#8211;5555</string>
+
+    <string name="hours0">6:00pm to 8:00pm</string>
+    <string name="hours1">3:00pm to 5:00pm</string>
+    <string name="hours2">8:00am to 6:00pm</string>
+    <string name="hours3">10:00am to 12:00am</string>
+    <string name="hours4">24hrs</string>
+
+    <string name="address">123 Main Street, Campbell, CA 95008</string>
+    <string name="address0">123 Main Street, Campbell, CA 95008</string>
+    <string name="address1">152 First Street, Campbell, CA 95008</string>
+    <string name="address2">302 Second Street, Campbell, CA 95008</string>
+    <string name="address3">29 Gilman Street, Campbell, CA 95008</string>
+    <string name="address4">43 Cherry Street, Campbell, CA 95008</string>
+    <string name="address5">1000 Bascom, Campbell, CA 95008</string>
+    <string name="address6">13 Main Street, Campbell, CA 95008</string>
+    <string name="address7">15 First Street, Campbell, CA 95008</string>
+    <string name="address8">52 Third Street, Campbell, CA 95008</string>
+    <string name="address9">29 Ocean Street, Campbell, CA 95008</string>
+
+    <string name="lat">1905</string>
+    <string name="lat0">1920</string>
+    <string name="lat1">1932</string>
+    <string name="lat2">1921</string>
+    <string name="lat3">1922</string>
+    <string name="lat4">1933</string>
+
+    <string name="lng">Museum</string>
+    <string name="lng0">Residentail</string>
+    <string name="lng1">Commercial</string>
+    <string name="lng2">Civic</string>
+
+
+    <string name="details">Lorem Ipsum is simply dummy text of the printing
+        and typesetting industry. Lorem Ipsum has been the industry\'s
+        standard dummy text ever since the 1500s, when an unknown printer
+        took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic
+        typesetting, remaining essentially unchanged. It was popularised in
+        the 1960s with the release of Letraset sheets containing Lorem
+        Ipsum passages, and more recently with desktop publishing software
+        like Aldus PageMaker including versions of Lorem Ipsum.</string>
+
+    <string name="artist">Billy Boyd</string>
+    <string name="artist0">Billy Boyd</string>
+    <string name="artist1">Cathy Catz</string>
+    <string name="artist2">David Michel</string>
+    <string name="artist3">Michelle Davidison</string>
+    <string name="artist4">Mr. Wizard</string>
+    <string name="artist5">Dr. No</string>
+    <string name="artist6">Paul Bunyon</string>
+    <string name="artist7">Jane the Great</string>
+    <string name="artist8">Professor Blinky</string>
+    <string name="artist9">Anna Greenwall</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="city_of_campbell_ca">City of Campbell, CA</string>
+    <string name="campbell_ca_95008">Campbell, CA 95008</string>
+    <string name="the_haps">The Haps</string>
+    <string name="art_outside">Art Outside</string>
+    <string name="walking_tours">Walking Tours</string>
+    <string name="what">What</string>
+    <string name="textview">TextView</string>
+    <string name="when">When</string>
+    <string name="hours">Hours</string>
+    <string name="where">Where</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="description">Description</string>
+    <string name="placeholder1">info 1</string>
+    <string name="additional_details">Additional Details</string>
+    <string name="details_address">Address</string>
+    <string name="details_hours">Hours</string>
+    <string name="details_type">Installation Type</string>
+    <string name="building_type">Building Type:</string>
+    <string name="year_built">Year Built</string>
+    <string name="details_date">Date</string>
+    <string name="details_phone">Phone Number</string>
+    <string name="details_artist">Artist</string>
+    <string name="details_name">Name</string>
+    <string name="brew_grinds_grub">Brew/Grinds/Grub</string>
+</resources>
