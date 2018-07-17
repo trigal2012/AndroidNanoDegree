@@ -3,13 +3,47 @@
 # README file
 high level summary of the projects from the Udacity Android Nano Degree course.
 
-## Music Structure App
+## Project 5: TourApp
+1. Key learnings:
+ * App contains at least 4 lists of relevant attractions for a location - Home page, + 4 lists, one for events around town, food/drink/coffee, walking tour, outside art . 
+ * Each list has it's own icon in the nav drawer
+ * User navigates between lists in Fragments using a Navigation Drawer
+ * All lists provide for selecting a row and going to another fragment displaying additional details. The type of details vary per list, though only one "details fragment" is used.
+ * Art and walking tours have pics
+ * lists with an address will auto link to google maps when the address is clicked
+ * details page with phone and address will autolink to a phone app or map app 
+ * For this exercise I focused on functionality rather than visual appeal.
+ * Other challenges was trying to determine the best way to pass data between fragments - ended up choosing Bundles
+ * Another issue I ran into was that adding the autolink feature to a TextView would interfere with the onItemclickListner I had setup on the row items in the list view. lots of searching landed me on this attribute, a complete lifesaver! ```android:descendantFocusability="blocksDescendants"```
+ https://stackoverflow.com/questions/39626337/can-someone-explain-descendantfocusability-afterdescendants
+ https://developer.android.com/reference/android/view/ViewGroup
+<kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/home.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/navigation_drawer.png" width="200" height="350">
+</kbd<kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/artoutside_withmap.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/art_details.png" width="200" height="350">
+</kbd>><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurants.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurant_details.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/walking_tour.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/event_details.png" width="200" height="350">
+</kbd>
+ 
+
+## Project 4: Music Structure App
 1. Key learnings:
     * Using multiple Activities
     * Implementing The RecyclerView and the various partial layout files to efficiently create an infinite scrolling list based on the number of entries in the data ArrayList
     * Using Intents to pass data from a Recycler View row to another activity
     * Using the Batch drawable import in Android Studio to quickly convert images to all relevant sizes
     * Introduction to Objects and ObjectAdapters to get info out of an ArrayList to create list views
+    * learned about Using Tabs along the top of the screen so users could swipe left/right to see more data
     
     I spent a lot of extra time on this one to make sure I had a good handle on Objects, Object Adapters and the intricacies of using the RecyclerView
 2. The design must include:
