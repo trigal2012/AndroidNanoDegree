@@ -21,8 +21,7 @@ high level summary of the projects from the Udacity Android Nano Degree course.
    https://developer.android.com/reference/android/view/ViewGroup
    
 ### Comment from the reviewer
-<dl><dt>Great work overall</dt>
-<dt>Thank you for your effort, see you in the next project :smile:</dt></dl>
+<dl><dt>Great work overall. Thank you for your effort, see you in the next project :smile:</dt></dl>
 
    
 <kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/home.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/navigation_drawer.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/artoutside_withmap.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/art_details.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurants.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurant_details.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/walking_tour.png" width="200" height="350"></kbd><kbd>
@@ -80,9 +79,8 @@ high level summary of the projects from the Udacity Android Nano Degree course.
    * Note: When applicable, in the grading logic remember to check that the correct answers are checked AND the incorrect answers are not checked.
    
    ### Comment from reviewer:
-   Awesome job here,Your app is more than wonderful. I am very happy to have reviewed your project.
-   You should be proud of yourself, if I can rating you I will give you Definitely the highest rating.
-   Keep it up and you will have a great place in the field.
+   <dl><dt>Awesome job here,Your app is more than wonderful. I am very happy to have reviewed your project.
+   You should be proud of yourself, if I can rating you I will give you Definitely the highest rating. Keep it up and you will have a great place in the field.</dt><dl>
 <kbd>
   <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/QuizMe/start.png" width="200" height="350">
 </kbd> <kbd>
