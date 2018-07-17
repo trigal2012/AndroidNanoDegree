@@ -7,7 +7,9 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### Project 3 - Quiz App (a multi-format question quiz to accept and grade user input) - Complete
 #### Project 4 - Music Structure App (a framework for building a podcast or music player, introduction to listviews, recyclerviews, custom class and custom class adapters, intents, multiple activity files) - Complete
 #### Project 5 - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - complete
-#### Project 6 and 7 - News app 1 and 2
+#### Project 6 and 7 - News app 
+  * part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Using an AsyncTask, Doing network operations independent of the Activity lifecycle
+  * part 2 
 #### Project 8 and 9 - Inventory app 1 and 2
 
 ## Project 5: TourApp
