@@ -1,7 +1,7 @@
 
 # README file
 high level summary of the projects from the Udacity Android Nano Degree course.
-There are size projects in the Android Basics Nanodegree course. Each build on each other to layer key concepts in building an app. 
+There are nine projects in the Android Basics Nanodegree course. Each build on each other to layer key concepts in building an app. 
 #### Project 1 - Single Screen App (A simple business card type app for a local business) - Complete
 #### Project 2 - Score Keeper App (A two team scoring game to learn about buttons, onclick methods, keeping track of scores) - Complete
 #### Project 3 - Quiz App (a multi-format question quiz to accept and grade user input) - Complete
