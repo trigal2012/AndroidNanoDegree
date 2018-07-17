@@ -2,11 +2,11 @@
 # README file
 high level summary of the projects from the Udacity Android Nano Degree course.
 There are nine projects in the Android Basics Nanodegree course. Each build on each other to layer key concepts in building an app. 
-#### Project 1 - Single Screen App (A simple business card type app for a local business) - Complete
-#### Project 2 - Score Keeper App (A two team scoring game to learn about buttons, onclick methods, keeping track of scores) - Complete
-#### Project 3 - Quiz App (a multi-format question quiz to accept and grade user input) - Complete
-#### Project 4 - Music Structure App (a framework for building a podcast or music player, introduction to listviews, recyclerviews, custom class and custom class adapters, intents, multiple activity files) - Complete
-#### Project 5 - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - complete
+#### [Project 1](https://github.com/trigal2012/AndroidNanoDegree#project-1-build-a-single-screen-app) - Single Screen App (A simple business card type app for a local business) - Complete
+#### [Project 2](https://github.com/trigal2012/AndroidNanoDegree#project-2-score-keeper-app) - Score Keeper App (A two team scoring game to learn about buttons, onclick methods, keeping track of scores) - Complete
+#### [Project 3](https://github.com/trigal2012/AndroidNanoDegree#project-3-quiz-app) - Quiz App (a multi-format question quiz to accept and grade user input) - Complete
+#### [Project 4](https://github.com/trigal2012/AndroidNanoDegree#project-4-music-structure-app) - Music Structure App (a framework for building a podcast or music player, introduction to listviews, recyclerviews, custom class and custom class adapters, intents, multiple activity files) - Complete
+#### [Project 5](https://github.com/trigal2012/AndroidNanoDegree#project-5-tourapp) - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - complete
 #### Project 6 and 7 - News app 
   * part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Using an AsyncTask, Doing network operations independent of the Activity lifecycle
   * part 2 
