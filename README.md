@@ -21,5 +21,5 @@ high level summary of the projects from the Udacity Android Nano Degree course.
 * Must have one or more image views or text views.
 * Elements are specified in dp, text is specified in sp.
 <kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/SingleScreenApp/SingleScreenApp.png">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/SingleScreenApp/SingleScreenApp.png" width="300" height="500">
 </kbd>
