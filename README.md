@@ -34,6 +34,16 @@ There are size projects in the Android Basics Nanodegree course. Each build on e
 <kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/home.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/navigation_drawer.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/artoutside_withmap.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/art_details.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurants.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurant_details.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/walking_tour.png" width="200" height="350"></kbd><kbd>
 <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/event_details.png" width="200" height="350"></kbd>
  
+ 5. Funtionality I'd like to add:
+     * get data from a db - use actual data not placeholder data
+     ** artist name, name of artwork, details of the painting
+     ** ability to upload image and location of other painted utility boxes and/or other outdoor art
+     * add food type icons to food and beverage list
+     * add ability to click on image thumbnail to get to a full screen image
+     * add a walking tour interactive map
+     ** with pins for each location
+     ** click on pins to get more information
+     ** "start" the tour to get directions from where you are to the 1st pin on the map
 
 ## Project 4: Music Structure App
 1. Key learnings:
