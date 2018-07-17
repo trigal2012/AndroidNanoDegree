@@ -27,7 +27,7 @@ high level summary of the projects from the Udacity Android Nano Degree course.
 <kbd>
   <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/QuizMe/start.png" width="200" height="350">
 </kbd> <kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/QuixMe/radio_button.png" width="200" height="350">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/QuizMe/radio_button.png" width="200" height="350">
 </kbd> <kbd>
   <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/QuizMe/text_entry.png" width="200" height="350">
 </kbd> <kbd>
