@@ -25,13 +25,13 @@ high level summary of the projects from the Udacity Android Nano Degree course.
     * Data about each song (or equivalent audio media such as podcast episode) should be stored in a custom class that contains at least 2 states (e.g. Song Name, Artist Name)
     * If images are included (e.g. Album Art), they are stored as drawables. All drawables are stored at multiple densities. Images are not required.
 <kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/category_list.png" width="200" height="350">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructureApp/category_list.png" width="200" height="350">
 </kbd><kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/lesson_list.png" width="200" height="350">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructureApp/lesson_list.png" width="200" height="350">
 </kbd><kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/lesson_details.png" width="200" height="350">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructureApp/lesson_details.png" width="200" height="350">
 </kbd><kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/pause.png" width="200" height="350">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructureApp/pause.png" width="200" height="350">
 </kbd>
 
 
