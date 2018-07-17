@@ -3,12 +3,44 @@
 # README file
 high level summary of the projects from the Udacity Android Nano Degree course.
 
+## Music Structure App
+1. Key learnings:
+    * Using multiple Activities
+    * Implementing The RecyclerView and the various partial layout files to efficiently create an infinite scrolling list based on the number of entries in the data ArrayList
+    * Using Intents to pass data from a Recycler View row to another activity
+    * Using the Batch drawable import in Android Studio to quickly convert images to all relevant sizes
+    * Introduction to Objects and ObjectAdapters to get info out of an ArrayList to create list views
+    
+    I spent a lot of extra time on this one to make sure I had a good handle on Objects, Object Adapters and the intricacies of using the RecyclerView
+2. The design must include:
+    * The app’s structure is suitable for a music player app. A similarly structured app which focuses on audiobooks, podcasts, or other audio media is also acceptable.
+    * The app contains 2 to 6 activities
+    * Features in the app are clearly defined either by labelling or images. For example, a button to play music could use a universally recognized triangular "Play" symbol or could have the text label "Play".
+    * Each activity contains button(s) which link it to other activities a user should be able to reach from that activity. For instance, a ‘Library’ activity might contain a button to move to the ‘Now Playing’ activity.
+    * Each button’s behavior is determined by an OnClickListener in the Java code rather than by the android:onClick attribute in the XML Layout.
+    * Each button properly opens the intended activity using an explicit Intent.
+    * App uses a custom adapter to populate the layout with views based on instances of the custom class.
+    * Information about instances of the custom class are stored in an appropriate data structure (e.g. ArrayList, Array).
+    * When the information needs to be displayed, it is efficiently retrieved (e.g. Looping).
+    * Data about each song (or equivalent audio media such as podcast episode) should be stored in a custom class that contains at least 2 states (e.g. Song Name, Artist Name)
+    * If images are included (e.g. Album Art), they are stored as drawables. All drawables are stored at multiple densities. Images are not required.
+<kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/category_list.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/lesson_list.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/lesson_details.png" width="200" height="350">
+</kbd><kbd>
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/MusicStructure/pause.png" width="200" height="350">
+</kbd>
+
+
 ## Project 3: Quiz App
 1. Key learnings:
    * using new types of views such as radio buttons, checkboxes, infinite +scrolling view
    * capturing user input - text, radio buttons, checkboxes
    * applying logic to keep track of user input on screen roation and layout changes
-2. Your Design must include
+2. The Design must include
    * App contains 4 - 10 questions, including at least one check box, one radio button, and one text entry.
    * Questions are in a variety of formats such as free text response, checkboxes, and radio buttons.
    * Checkboxes are only used for questions with multiple right answers. Radio buttons are only used for questions with a single right answer.
@@ -38,7 +70,7 @@ high level summary of the projects from the Udacity Android Nano Degree course.
 1. key learnings:
     * create more sophisticated xmls to include buttons and other items users can interact with
     * start learning java and writing backend logic to generate the desired results based on user actions
-2. Your Design must include:
+2. The Design must include:
     * The chosen game has either multiple amounts of points that can be scored, as in american football, or multiple important metrics to track, such as fouls, outs, and innings in baseball.
     * App is divided into two columns, one for each team.
     * Each column contains a large TextView to keep track of the current score for that team.
@@ -65,7 +97,7 @@ high level summary of the projects from the Udacity Android Nano Degree course.
 1. Key learnings:
     * build a basic understanding of how android studio works
     * understand how to create views using xmls, use autolinks, images, and varying layouts to create the desired design
-2. Your design must include:
+2. The design must include:
     * Business name
     * At least one photo representing the business
     * Two or more other pieces of information, such as:
