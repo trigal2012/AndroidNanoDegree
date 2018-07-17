@@ -25,7 +25,7 @@ high level summary of the projects from the Udacity Android Nano Degree course.
   <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/ScoreKeeperApp/team1_lucky_lost_4.png" width="200" height="350">
 </kbd>
 <kbd>
-  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/ScoreKeeperApp/team2_lucky_won12.png" width="200" height="350">
+  <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/ScoreKeeperApp/team2_lucky_won_12.png" width="200" height="350">
 </kbd>
 <kbd>
   <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/ScoreKeeperApp/team1_lucky_draw.png" width="200" height="350">
