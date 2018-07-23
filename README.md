@@ -22,8 +22,9 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
    * lists with an address will auto link to google maps when the address is clicked
    * details page with phone and address will autolink to a phone app or map app 
    * For this exercise I focused on functionality rather than visual appeal.
-   * Other challenges was trying to determine the best way to pass data between fragments - ended up choosing Bundles
-   * Another issue I ran into was that adding the autolink feature to a TextView would interfere with the onItemclickListner I had setup on the row items in the list view. lots of searching landed me on this attribute, a complete lifesaver! ```android:descendantFocusability="blocksDescendants"```
+   * Challenges/Issues:
+   ** determine the best way to pass data between fragments - ended up choosing Bundles
+   ** adding the autolink feature to a TextView would interfere with the onItemclickListner I had setup on the row items in the list view. lots of searching landed me on this attribute, a complete lifesaver! ```android:descendantFocusability="blocksDescendants"```
    
    https://stackoverflow.com/questions/39626337/can-someone-explain-descendantfocusability-afterdescendants
    
