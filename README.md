@@ -25,6 +25,8 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 <dl><dt>Hi Student, that was an excellent effort and you did a great job! 🎉 🎊:smile:</dt></dl>
 <dl><dt>You have made an very good User Interface and the code quality was great.🎉 🎊:smile:</dt></dl>
 <dl><dt>As a programmer, a major part of your work would be to find and fix bugs and focus on feature completion. Great job on doing that this time 🎉:smile:</dt></dl>
+
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp1/appLoad.png" width="200" height="350"></kbd><kbd><img <kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp1/intentToWeb.png" width="200" height="350"></kbd><kbd><img <kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp1/openInGuardian.png" width="200" height="350"></kbd><kbd><img 
    
 ## Project 5: TourApp
 1. Key learnings:
