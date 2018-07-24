@@ -7,11 +7,26 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### [Project 3](https://github.com/trigal2012/AndroidNanoDegree#project-3-quiz-app) - Quiz App (a multi-format question quiz to accept and grade user input) - Complete
 #### [Project 4](https://github.com/trigal2012/AndroidNanoDegree#project-4-music-structure-app) - Music Structure App (a framework for building a podcast or music player, introduction to listviews, recyclerviews, custom class and custom class adapters, intents, multiple activity files) - Complete
 #### [Project 5](https://github.com/trigal2012/AndroidNanoDegree#project-5-tourapp) - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - complete
-#### Project 6 and 7 - News app 
-  * part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Using an AsyncTask, Doing network operations independent of the Activity lifecycle
+#### [Project 6] and 7 - News app (https://github.com/trigal2012/AndroidNanoDegree#project-6-newsapp)
+  * part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Handling Async and background tasks, Doing network operations independent of the Activity lifecycle  - #### Complete
   * part 2 
 #### Project 8 and 9 - Inventory app 1 and 2
 
+## Project 6: NewsApp
+1. Key leanrings:
+   * API integration with The Guardian news API - https://open-platform.theguardian.com/documentation/
+     * external libraries for integrating with the above API, JSONParsing, or handling network connectivity were not allowed so they needed to be created manually
+   * JSONResponse Parsing
+   * Error handling
+     * to cover network connectivity issues
+     * malformed data
+     * missing data - response was formed correctly but requested fields either don't exist or have no data
+
+### Comment from the reviewer
+<dl><dt>Hi Student, that was an excellent effort and you did a great job! 🎉 🎊:smile:</dt></dl>
+<dl><dt>You have made an very good User Interface and the code quality was great.🎉 🎊:smile:</dt></dl>
+<dl><dt>As a programmer, a major part of your work would be to find and fix bugs and focus on feature completion. Great job on doing that this time 🎉:smile:</dt></dl>
+   
 ## Project 5: TourApp
 1. Key learnings:
    * App contains at least 4 lists of relevant attractions for a location - Home page, + 4 lists, one for events around town, food/drink/coffee, walking tour, outside art . 
@@ -23,8 +38,8 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
    * details page with phone and address will autolink to a phone app or map app 
    * For this exercise I focused on functionality rather than visual appeal.
    * Challenges/Issues:
-   ** determine the best way to pass data between fragments - ended up choosing Bundles
-   ** adding the autolink feature to a TextView would interfere with the onItemclickListner I had setup on the row items in the list view. lots of searching landed me on this attribute, a complete lifesaver! ```android:descendantFocusability="blocksDescendants"```
+    * determine the best way to pass data between fragments - ended up choosing Bundles
+    * adding the autolink feature to a TextView would interfere with the onItemclickListner I had setup on the row items in the list view. lots of searching landed me on this attribute, a complete lifesaver! ```android:descendantFocusability="blocksDescendants"```
    
    https://stackoverflow.com/questions/39626337/can-someone-explain-descendantfocusability-afterdescendants
    
@@ -39,14 +54,14 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
  
  5. Funtionality I'd like to add:
      * get data from a db - use actual data not placeholder data
-     ** artist name, name of artwork, details of the painting
-     ** ability to upload image and location of other painted utility boxes and/or other outdoor art
+      * artist name, name of artwork, details of the painting
+      * ability to upload image and location of other painted utility boxes and/or other outdoor art
      * add food type icons to food and beverage list
      * add ability to click on image thumbnail to get to a full screen image
      * add a walking tour interactive map
-     ** with pins for each location
-     ** click on pins to get more information
-     ** "start" the tour to get directions from where you are to the 1st pin on the map
+      * with pins for each location
+      * click on pins to get more information
+      * "start" the tour to get directions from where you are to the 1st pin on the map
 
 ## Project 4: Music Structure App
 1. Key learnings:
