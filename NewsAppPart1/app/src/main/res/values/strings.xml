@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">NewsAppPart1</string>
+
+    <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
+    <string name="no_internet_connection">No internet connection.</string>
+
+    <!-- Text to display in the list when there are no items [CHAR LIMIT=NONE] -->
+    <string name="no_items">No items found. Check back later.</string>
+    <string name="title_placeholder">title of news story</string>
+    <string name="author_placeholder">author of story</string>
+    <string name="date_placeholder">Month Day, Year</string>
+    <string name="section">Life and Style</string>
+</resources>

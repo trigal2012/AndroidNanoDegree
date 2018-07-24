@@ -1,0 +1,51 @@
+{
+  "response": {
+    "status": "ok",
+    "userTier": "developer",
+    "total": 38,
+    "startIndex": 1,
+    "pageSize": 1,
+    "currentPage": 1,
+    "pages": 38,
+    "orderBy": "newest",
+    "tag": {
+      "id": "sport/tour-de-france-2018",
+      "type": "keyword",
+      "sectionId": "sport",
+      "sectionName": "Sport",
+      "webTitle": "Tour de France 2018",
+      "webUrl": "https://www.theguardian.com/sport/tour-de-france-2018",
+      "apiUrl": "https://content.guardianapis.com/sport/tour-de-france-2018"
+    },
+    "results": [
+      {
+        "id": "sport/live/2018/jul/19/tour-de-france-2018-race-heads-to-alpe-dhuez-on-stage-12-live",
+        "type": "liveblog",
+        "sectionId": "sport",
+        "sectionName": "Sport",
+        "webPublicationDate": "2018-07-19T16:15:51Z",
+        "webTitle": "Tour de France 2018: Geraint Thomas wins stage 12 on Alpe d'Huez – as it happened",
+        "webUrl": "https://www.theguardian.com/sport/live/2018/jul/19/tour-de-france-2018-race-heads-to-alpe-dhuez-on-stage-12-live",
+        "apiUrl": "https://content.guardianapis.com/sport/live/2018/jul/19/tour-de-france-2018-race-heads-to-alpe-dhuez-on-stage-12-live",
+        "tags": [
+          {
+            "id": "profile/simonburnton",
+            "type": "contributor",
+            "webTitle": "Simon Burnton",
+            "webUrl": "https://www.theguardian.com/profile/simonburnton",
+            "apiUrl": "https://content.guardianapis.com/profile/simonburnton",
+            "references": [],
+            "bio": "<p>Simon Burnton is a <a href=\"http://www.guardian.co.uk/sport\">subeditor for sport</a></p>",
+            "bylineImageUrl": "https://static.guim.co.uk/sys-images/Sport/Pix/columnists/2009/3/21/1237594248076/Simon-Burnton-001.jpg",
+            "firstName": "burnton",
+            "lastName": "",
+            "twitterHandle": "Simon_Burnton"
+          }
+        ],
+        "isHosted": false,
+        "pillarId": "pillar/sport",
+        "pillarName": "Sport"
+      }
+    ]
+  }
+}

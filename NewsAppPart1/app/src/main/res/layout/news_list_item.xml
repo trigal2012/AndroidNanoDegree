@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:baselineAligned="false">
+
+    <TextView
+        android:id="@+id/section"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        tools:text="@string/section"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp"
+        android:textColor="@color/primaryTextColor"
+        android:textStyle="bold"
+        android:background="@color/secondaryColor"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_toRightOf="@id/section"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"
+        tools:text="@string/title_placeholder"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="2.5dp"
+        android:layout_marginLeft="5dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@id/title"
+        android:layout_toRightOf="@id/section"
+        android:gravity="bottom">
+
+
+        <TextView
+            android:id="@+id/contributor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:fontFamily="times"
+            tools:text="@string/author_placeholder"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:textAlignment="gravity"
+            android:textSize="14sp"
+            tools:text="@string/date_placeholder"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp" />
+    </RelativeLayout>
+</RelativeLayout>
