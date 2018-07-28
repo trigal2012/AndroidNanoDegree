@@ -16,12 +16,11 @@ Key learnings:
    * The API integration with The Guardian news API was a bit wonky. The available documetion explained the basics of the api construtc but had few detals on the data structure. For example, there is the idea of "edition" which is supposed to be country or region specific news with the regions being "us, "uk", "au" and "international". There is another concept called "sections" wich is a means to categorize the type of news to be returned, for example sports, business, money, technology. The basic api contruct as specified in the available documentation to get "us" centric "sports should be https://content.guardianapis.com/us/sport however, depending on the section, I found I had to do this:
 <br> https://content.guardianapis.com/edition-section or even a third option: https://content.guardianapis.com/section/edition. </br>
     * The option to use depended on the section. The api did not provide data details at this level. I was able to figure this out by inspecting the guardian website and creating various javascripts to parse a variety of GET request results.</br>
-   here are some examples:
-   |NEWS CATEGORY|ORIGINAL URL TRIED|Actual URL NEEDED|
-   |-------------|------------------|-----------------|
-   |us news| https://content.guardianapis.com/us/news| https://content.guardianapis.com/us-news|
-   |european travel| https://content.guardianapis.com/uk/travel| https://content.guardianapis.com/travel/europe|
-   |cycling|https://content.guardianapis.com/cycling| https://content.guardianapis.com/sport/cycling|
+   here are some examples:<br>
+    NEWS CATEGORY | Original URL Tried | Actual URL Needed <br>
+    us news| https://content.guardianapis.com/us/news | https://content.guardianapis.com/us-news <br>
+    european travel| https://content.guardianapis.com/uk/travel | https://content.guardianapis.com/travel/europe <br>
+    cycling|https://content.guardianapis.com/cycling | https://content.guardianapis.com/sport/cycling 
       
 ### Comment from the reviewer
 <dl><dt>Awesome, great job here! You've made good use of the Loader framework to grab your data and you've parsed it well and displayed it properly after that. This is quite a common set of operations that we will be performing often, so keep the lessons learned during this project in mind as you go forward and write more Android apps! Well done, have fun with whatever you work on next!</dt></dl>
