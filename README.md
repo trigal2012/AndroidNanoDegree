@@ -8,11 +8,36 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### [Project 4](https://github.com/trigal2012/AndroidNanoDegree#project-4-music-structure-app) - Music Structure App (a framework for building a podcast or music player, introduction to listviews, recyclerviews, custom class and custom class adapters, intents, multiple activity files) - Complete
 #### [Project 5](https://github.com/trigal2012/AndroidNanoDegree#project-5-tourapp) - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - Complete
 #### [Project 6](https://github.com/trigal2012/AndroidNanoDegree/blob/master/README.md#project-6-newsapp) - News App (part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Handling Async and background tasks, Doing network operations independent of the Activity lifecycle) - Complete
-#### Project 7 - New App part 2 - adding in user permissions to control the data requested for the news feed - * Underway
+#### Project 7 - New App part 2 - adding in user permissions to control the data requested for the news feed - Complete
 #### Project 8 and 9 - Inventory app 1 and 2
 
+## Project 7: NewsApp with Settings
+1. Key learnings:
+   * The API integration with The Guardian news API was a bit wonky. The available documetion explained the basics of the api construtc but had few detals on the data structure. For example, there is the idea of "edition" which is suppoed to be country or region specific news with the regions being "us, "uk", "au" and "international". There is another concept called "sections" wich is a means to categorize the type of news, for example sports, business, money, technology. The basic api contruct as specific in the available documentation should be https://content.guardianapis.com/edition/section however, depending on the section, I found I had to do this:
+   https://content.guardianapis.com/edition-section or even a third option:
+   https://content.guardianapis.com/section/edition. 
+   Which option to use depended on the section. The api did not provide data details at this level. I was able to figure this out by inspecting the guardian website and creating various javascripts to parse a variety of GET requests results.
+
+### Comment from the reviewer
+<dl><dt>Awesome, great job here! You've made good use of the Loader framework to grab your data and you've parsed it well and displayed it properly after that. This is quite a common set of operations that we will be performing often, so keep the lessons learned during this project in mind as you go forward and write more Android apps! Well done, have fun with whatever you work on next!</dt></dl>
+
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp2/settings.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp2/settings_menu.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp2/settings_news_pref.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp2/settings_num_results.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp2/settings_results.png" width="200" height="350"></kbd>
+
+#### Funtionality I'd like to add:
+ * add Navigation Drawer for News Categories
+ * add Tabs for News subCategries
+ * change list views to be more performant - use something like Recycle view
+ * add search ability
+ * Change settings to have Edition
+ * add a setting for "My News" where user can specify preferred News Categories and subcategories,
+ * the Nav drawer will have an option for "My News" along with the other main News catgories
+
 ## Project 6: NewsApp
-1. Key leanrings:
+1. Key learnings:
    * API integration with The Guardian news API - https://open-platform.theguardian.com/documentation
      * external libraries for integrating with the above API, JSONParsing, or handling network connectivity were not allowed so they needed to be created manually
    * JSONResponse Parsing
@@ -31,7 +56,7 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 <kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/NewsApp1/openInGuardian.png" width="200" height="350"></kbd>
    
 ## Project 5: TourApp
-1. Key learnings:
+Key learnings:
    * App contains at least 4 lists of relevant attractions for a location - Home page, + 4 lists, one for events around town, food/drink/coffee, walking tour, outside art . 
    * Each list has it's own icon in the nav drawer
    * User navigates between lists in Fragments using a Navigation Drawer
@@ -55,16 +80,16 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 <kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/home.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/navigation_drawer.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/artoutside_withmap.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/art_details.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurants.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/restaurant_details.png" width="200" height="350"></kbd><kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/walking_tour.png" width="200" height="350"></kbd><kbd>
 <img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/TourApp/event_details.png" width="200" height="350"></kbd>
  
- 5. Funtionality I'd like to add:
-     * get data from a db - use actual data not placeholder data
-      * artist name, name of artwork, details of the painting
-      * ability to upload image and location of other painted utility boxes and/or other outdoor art
-     * add food type icons to food and beverage list
-     * add ability to click on image thumbnail to get to a full screen image
-     * add a walking tour interactive map
-      * with pins for each location
-      * click on pins to get more information
-      * "start" the tour to get directions from where you are to the 1st pin on the map
+ #### Funtionality I'd like to add:
+ * get data from a db - use actual data not placeholder data
+ * artist name, name of artwork, details of the painting
+ * ability to upload image and location of other painted utility boxes and/or other outdoor art
+ * add food type icons to food and beverage list
+ * add ability to click on image thumbnail to get to a full screen image
+ * add a walking tour interactive map
+ * with pins for each location
+ * click on pins to get more information
+ * "start" the tour to get directions from where you are to the 1st pin on the map
 
 ## Project 4: Music Structure App
 1. Key learnings:
