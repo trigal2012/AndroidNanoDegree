@@ -8,7 +8,7 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### [Project 4](https://github.com/trigal2012/AndroidNanoDegree#project-4-music-structure-app) - Music Structure App (a framework for building a podcast or music player, introduction to listviews, recyclerviews, custom class and custom class adapters, intents, multiple activity files) - Complete
 #### [Project 5](https://github.com/trigal2012/AndroidNanoDegree#project-5-tourapp) - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - Complete
 #### [Project 6](https://github.com/trigal2012/AndroidNanoDegree/blob/master/README.md#project-6-newsapp) - News App (part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Handling Async and background tasks, Doing network operations independent of the Activity lifecycle) - Complete
-#### Project 7 - New App part 2 - adding in user permissions to control the data requested for the news feed
+#### Project 7 - New App part 2 - adding in user permissions to control the data requested for the news feed - * Underway
 #### Project 8 and 9 - Inventory app 1 and 2
 
 ## Project 6: NewsApp
