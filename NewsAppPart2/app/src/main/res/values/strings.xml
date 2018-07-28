@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">NewsAppPart2</string>
+
+    <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
+    <string name="no_internet_connection">No internet connection.</string>
+
+    <!-- Text to display in the list when there are no items [CHAR LIMIT=NONE] -->
+    <string name="no_items">No items found. Check back later.</string>
+    <string name="title_placeholder">title of news story</string>
+    <string name="author_placeholder">author of story</string>
+    <string name="date_placeholder">Month Day, Year</string>
+    <string name="section">Life and Style</string>
+
+    <!-- Strings related to Settings -->
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">Settings</string>
+
+    <string-array name="number_of_results_preference_entries">
+        <item>10</item>
+        <item>30</item>
+        <item>50</item>
+    </string-array>
+
+    <string-array name="number_of_results_preference_entry_values">
+        <item>10</item>
+        <item>30</item>
+        <item>50</item>
+    </string-array>
+
+    <string name="number_of_results_title">Number of Results</string>
+    <string name="number_results_key">number_results_key</string>
+    <string name="number_results_key_default">30</string>
+
+    <!--news Type preference entries-->
+    <string-array name="newsType_preference_entries">
+        <item>US News</item>
+        <item>Cycling</item>
+        <item>European Travel</item>
+    </string-array>
+
+    <!--news Type preference entry values-->
+    <string-array name="newsType_preference_entry_values">
+        <item>us-news</item>
+        <item>cycling</item>
+        <item>europe</item>
+    </string-array>
+
+    <string name="newsType_title">News Feed Preferences</string>
+    <string name="newsType_key">newsType_key</string>
+    <string name="newsType_key_default">us-new</string>
+
+</resources>
