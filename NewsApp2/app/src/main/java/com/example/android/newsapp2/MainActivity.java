@@ -48,17 +48,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setFragment(new environmentDataFragment());
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(this);
-
-        String editionPref = sharedPref.getString(SettingsActivity.KEY_PREF_EDITION, String.valueOf(1));
-        String sportPref = sharedPref.getString(SettingsActivity.KEY_PREF_SPORTS, String.valueOf(1));
-        String environmentPref = sharedPref.getString(SettingsActivity.KEY_PREF_ENVIRONMENT, String.valueOf(1));
-
-    }
+        }
 
     @Override
     public void onBackPressed() {
@@ -84,7 +74,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
@@ -98,17 +87,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        // use Bundle to pass in the Edition setting
-        //TODO: use actual user preferences instead of the placeholder Bundle value
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(this);
-
-        String editionPref = sharedPref.getString(SettingsActivity.KEY_PREF_EDITION, String.valueOf(1));
-        String sportPref = sharedPref.getString(SettingsActivity.KEY_PREF_SPORTS, String.valueOf(1));
-        String environmentPref = sharedPref.getString(SettingsActivity.KEY_PREF_ENVIRONMENT, String.valueOf(1));
 
 
         int id = item.getItemId();
@@ -122,7 +101,7 @@ public class MainActivity extends AppCompatActivity
             setFragment(new environmentDataFragment());
         } else if (id == R.id.nav_sport) {
             Bundle arguments = new Bundle();
-            arguments.putString("Edition", editionPref);
+            arguments.putString("Edition", "uk");
             Fragment sportFrag = new sportDataFragment();
             sportFrag.setArguments(arguments);
             setFragment(sportFrag);

@@ -8,7 +8,6 @@
 
     <!-- Strings related to Settings -->
     <string name="action_settings">Settings</string>
-    <string name="title_activity_settings">Settings</string>
 
     <string-array name="edition_preference_entries">
         <item>United States</item>
@@ -22,46 +21,19 @@
         <item>au</item>
     </string-array>
 
-    <!--Environment preference entries-->
-    <string-array name="environment_preference_entries">
-        <item>Climate Change</item>
-        <item>Wildlife</item>
-        <item>Energy</item>
-        <item>Pollution</item>
+    <!--news Type preference entries-->
+    <string-array name="newsType_preference_entries">
+        <item>Environment</item>
+        <item>Sports</item>
     </string-array>
 
-    <!--Environment preference entry values-->
-    <string-array name="environment_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+    <!--news Type preference entry values-->
+    <string-array name="newsType_preference_entry_values">
+        <item>environment</item>
+        <item>sport</item>
     </string-array>
 
-    <!--Sport preference entries-->
-    <string-array name="sport_preference_entries">
-        <item>Soccer</item>
-        <item>NFL</item>
-        <item>Tennis</item>
-        <item>MLB</item>
-    </string-array>
-
-    <!--Sport preference entry values-->
-    <string-array name="sport_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edition_options">Edition (US/UK/AU)</string>
-    <string name="news_home">Home View</string>
-    <string name="environmentCategory">Environment</string>
-    <string name="sportCategory">Sports</string>
-    <string name="environment_key">environment_key</string>
-    <string name="sport_key">sport_key</string>
-    <string name="edition_key">edition_key</string>
+    <string name="newsType">Default News type</string>
 
 </resources>

@@ -61,11 +61,11 @@ public class sportDataFragment extends Fragment {
 
         public String[] setTabs(){
             String tempTabs[] = new String[0];
-            if(saEdition.equals("us")) {
+            if(bundleEdition.equals("us")) {
                 tempTabs = new String[]{"Soccer", "NFL", "Tennis", "MLB", "MLS", "NBA", "NHL"};
-            }else if(saEdition.equals("uk")){
+            }else if(bundleEdition.equals("uk")){
                 tempTabs = new String[]{"Football", "Rugby Union", "Cricket", "Tennis", "Cycling", "F1", "Golf", "Boxing", "Rugby League", "Racing"};
-            }else if(saEdition.equals("au")){
+            }else if(bundleEdition.equals("au")){
                 tempTabs = new String[]{"Football", "AFL", "NRL", "A-League", "Cricket", "Rugby Union", "Tennis"};
             }
             return tempTabs;

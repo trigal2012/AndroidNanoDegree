@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/action_settings">
 
+    <ListPreference
+        android:entries="@array/edition_preference_entries"
+        android:entryValues="@array/edition_preference_entry_values"
+        android:key="edition_key"
+        android:title="@string/edition_options" />
 
-    <PreferenceCategory
-        android:key="@string/news_home"
-        android:title="@string/news_home">
-        <ListPreference
-            android:entries="@array/environment_preference_entries"
-            android:entryValues="@array/environment_preference_entry_values"
-            android:key="environment_key"
-            android:title="@string/environmentCategory" />
-
-        <ListPreference
-            android:entries="@array/sport_preference_entries"
-            android:entryValues="@array/sport_preference_entry_values"
-            android:key="sport_key"
-            android:title="@string/sportCategory" />
-
-        <ListPreference
-            android:entries="@array/edition_preference_entries"
-            android:entryValues="@array/edition_preference_entry_values"
-            android:key="edition_key"
-            android:title="@string/edition_options" />
-    </PreferenceCategory>
-
+    <ListPreference
+        android:entries="@array/newsType_preference_entries"
+        android:entryValues="@array/newsType_preference_entry_values"
+        android:key="newsType_key"
+        android:title="@string/newsType" />
 
 </PreferenceScreen>
