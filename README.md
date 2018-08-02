@@ -9,7 +9,29 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### [Project 5](https://github.com/trigal2012/AndroidNanoDegree#project-5-tourapp) - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - Complete
 #### [Project 6](https://github.com/trigal2012/AndroidNanoDegree/blob/master/README.md#project-6-newsapp) - News App (part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Handling Async and background tasks, Doing network operations independent of the Activity lifecycle) - Complete
 #### [Project 7](https://github.com/trigal2012/AndroidNanoDegree#project-7-newsapp-with-settings) - New App part 2 - adding in user permissions to control the data requested for the news feed - Complete
-#### Project 8 and 9 - Inventory app 1 and 2
+#### [Project 8](https://github.com/trigal2012/AndroidNanoDegree#project-8-inventory-app---DB-setup-only)Inventory app 1 - Complete
+#### [Project 9]()Inventory app 2
+
+## Project 8: Inventory App - DB setup only
+Key Learnings:
+* integrating a sqlite3 database with an app, icluding:
+  ** Contracts - specifies reference values for table names and column names which can be used through out the app
+  ** DBHelpers - this si where you specify the tables, data types for the information in the tables, as well as all of your CRUD actions
+  ** Models - while not specifically part of this lesson I wanted to understand how DB Object models (that we learned about in lesson 4) would work with an actual database
+* this project was focused on DB setup, configuration, adding mock data and displaying that data. the UI work is intentionally minimal. The functionality includes:
+  ** the ability to add data into one of three tables Categories, Suppliers, Products
+    *** the screen refreshes to show new data once it is inserted into the DB
+  ** the ability to delete all data in all tables
+  ** the ability to display the contents of the three tables
+
+### Comment from the reviewer
+<dl><dt>This project has a great user interface beyond of this project rubrics. Good job 👍 </dt></dl>
+
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/start_no_items_in_db.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/action_list.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/add_category.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/add_suppliers.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/add_products.png" width="200" height="350"></kbd>
 
 ## Project 7: NewsApp with Settings
 Key learnings:
