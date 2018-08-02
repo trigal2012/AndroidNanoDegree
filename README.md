@@ -9,8 +9,8 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### [Project 5](https://github.com/trigal2012/AndroidNanoDegree#project-5-tourapp) - Tour App (a framework for creating touring apps for cities or regions, using list views, fragments, and Bundles, minimal activity files) - Complete
 #### [Project 6](https://github.com/trigal2012/AndroidNanoDegree/blob/master/README.md#project-6-newsapp) - News App (part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Handling Async and background tasks, Doing network operations independent of the Activity lifecycle) - Complete
 #### [Project 7](https://github.com/trigal2012/AndroidNanoDegree#project-7-newsapp-with-settings) - New App part 2 - adding in user permissions to control the data requested for the news feed - Complete
-#### [Project 8](https://github.com/trigal2012/AndroidNanoDegree#project-8-inventory-app---DB-setup-only)Inventory app 1 - Complete
-#### [Project 9]()Inventory app 2
+#### [Project 8](https://github.com/trigal2012/AndroidNanoDegree#project-8-inventory-app---DB-setup-only) - Inventory app 1 - Complete
+#### Project 9 - Inventory app 2
 
 ## Project 8: Inventory App - DB setup only
 Key Learnings:
