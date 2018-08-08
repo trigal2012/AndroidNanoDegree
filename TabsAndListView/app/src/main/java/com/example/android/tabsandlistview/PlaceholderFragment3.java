@@ -25,7 +25,7 @@ import static com.example.android.tabsandlistview.data.PetContract.PetEntry._ID;
 public class PlaceholderFragment3 extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     /** Identifier for the pet data loader */
-    private static final int PET_LOADER = 0;
+    private static final int PET_LOADER = 3;
 
     /** Adapter for the ListView */
     PetCursorAdapter mCursorAdapter;
@@ -61,7 +61,7 @@ public class PlaceholderFragment3 extends Fragment implements LoaderManager.Load
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
-                null);                  // Default sort order
+                COLUMN_PET_NAME + " ASC");                  // Default sort order
     }
 
 

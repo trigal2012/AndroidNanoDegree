@@ -25,7 +25,7 @@ import static com.example.android.tabsandlistview.data.PetContract.PetEntry._ID;
 public class PlaceholderFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     /** Identifier for the pet data loader */
-    private static final int PET_LOADER = 0;
+    private static final int PET_LOADER = 1;
 
     /** Adapter for the ListView */
     PetCursorAdapter mCursorAdapter;
@@ -57,12 +57,14 @@ public class PlaceholderFragment2 extends Fragment implements LoaderManager.Load
                 COLUMN_PET_BREED };
 
         // This loader will execute the ContentProvider's query method on a background thread
+        Log.i("a thing"," "+ new CursorLoader(getActivity(),PetContract.PetEntry.CONTENT_URI, projection,null,null,null));
+
         return new CursorLoader(getActivity(),   // Parent activity context
                 PetContract.PetEntry.CONTENT_URI,   // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
-                null);                  // Default sort order
+                COLUMN_PET_BREED + " ASC");                  // Default sort order
     }
 
 
