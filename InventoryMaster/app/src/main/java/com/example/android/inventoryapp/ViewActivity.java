@@ -97,137 +97,82 @@ public class ViewActivity extends AppCompatActivity {
 
 
     private void displayCategoryData() {
-        Log.i("get all data", "the get all category method was called");
+        //use the model to get the category column names
+        //List<CategoryModel> categoryColumns = mDbHelper.getCategoryColumns();
 
+        //use the model to get all categories from the database
+        List<CategoryModel> allCategories = mDbHelper.getAllCategories();
+
+        //find the category view and make it visible
         TextView displayView = (TextView) findViewById(R.id.text_view_category);
         displayView.setVisibility(View.VISIBLE);
 
-        List<CategoryModel> allCategories = mDbHelper.getAllCategories();
+        //number of rows in the category table
         displayView.setText("The category table contains " + allCategories.size() + " categories.\n\n");
+
+        //TODO: replace this with a call to mDbHelper getCategoryColumns()
+        //TODO: use for loop to build the header row
+        //create the header row for the category list
         displayView.append(InventoryContract.CategoryEntry._ID + " - " +
-                InventoryContract.CategoryEntry.COLUMN_CATEGORY_NAME + "\n");
+                           InventoryContract.CategoryEntry.COLUMN_CATEGORY_NAME + "\n");
+
+        //add each category to the view
         for(CategoryModel category: allCategories){
             displayView.append("\n" + category.getId() + " - " + category.getName());
         }
     }
 
     private void displaySupplierData() {
-        Log.i("get all data", "the get all data method was called");
+        //use the model to get the supplier column names
+        //List<SupplierModel> supplierColumns = mDbHelper.getSupplierColumns();
 
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        //use the model to get all suppliers from the database
+        List<SupplierModel> allSuppliers = mDbHelper.getAllSuppliers();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                InventoryContract.SupplierEntry._ID,
-                InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME,
-                InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE};
-
-        // Perform a query on the pets table
-        Cursor cursor = db.query(
-                InventoryContract.SupplierEntry.TABLE_NAME,   // The table to query
-                projection,            // The columns to return
-                null,                  // The columns for the WHERE clause
-                null,                  // The values for the WHERE clause
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                null);                   // The sort order
-
+        //find supplier view and make it visible
         TextView displayView = (TextView) findViewById(R.id.text_view_supplier);
         displayView.setVisibility(View.VISIBLE);
 
-        try {
-            // Create a header in the Text View that looks like this:
-            //
-            //
-            // In the while loop below, iterate through the rows of the cursor and display
-            // the information from each column in this order.
-            displayView.setText("The supplier table contains " + cursor.getCount() + " suppliers.\n\n");
-            displayView.append(InventoryContract.SupplierEntry._ID + " - " +
-                    InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME + " - " +
-                    InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE + "\n");
+        //number of rows in supplier table
+        displayView.setText("The supplier table contains " + allSuppliers.size() + " suppliers.\n\n");
 
-            // Figure out the index of each column
-            int idColumnIndex = cursor.getColumnIndex(InventoryContract.SupplierEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME);
-            int phoneColumnIndex = cursor.getColumnIndex(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE);
+        //TODO: replace this with a call to mDbHelper getSupplierColumns()
+        //TODO: use for loop to build the header row
+        //create the header row for the sipplier list
+        displayView.append(InventoryContract.SupplierEntry._ID + " - " +
+                           InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME + " - " +
+                           InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE + "\n");
 
-
-            // Iterate through all the returned rows in the cursor
-            while (cursor.moveToNext()) {
-                // Use that index to extract the String or Int value of the word
-                // at the current row the cursor is on.
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                String currentPhone = cursor.getString(phoneColumnIndex);
-
-                // Display the values from each column of the current row in the cursor in the TextView
-                displayView.append(("\n" + currentID + " - " + currentName + " - " + currentPhone));
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
+        //add each supplier to the view
+        for(SupplierModel supplier: allSuppliers) {
+            displayView.append(("\n" + supplier.getId() + " - " + supplier.getName() + " - " + supplier.getPhone()));
         }
     }
 
     private void displayProductData() {
-        Log.i("get all data", "the get all data method was called");
+        //use the model to get the producy column names
+        //List<ProductModel> productColumns = mDbHelper.getProductColumns();
 
-       SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        //use the model to get all suppliers from the database
+        List<ProductModel> allProducts = mDbHelper.getAllProducts();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                InventoryContract.ProductEntry._ID,
-                InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
-                InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY};
-
-        // Perform a query on the pets table
-        Cursor cursor = db.query(
-                InventoryContract.ProductEntry.TABLE_NAME,   // The table to query
-                projection,            // The columns to return
-                null,                  // The columns for the WHERE clause
-                null,                  // The values for the WHERE clause
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                null);                   // The sort order
-
+        //find products view and make it visible
         TextView displayView = (TextView) findViewById(R.id.text_view_product);
         displayView.setVisibility(View.VISIBLE);
 
-        try {
-            // Create a header in the Text View that looks like this:
-            //
-            //
-            // In the while loop below, iterate through the rows of the cursor and display
-            // the information from each column in this order.
-            displayView.setText("The product table contains " + cursor.getCount() + " products.\n\n");
-            displayView.append(InventoryContract.ProductEntry._ID + " - " +
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME + " - " +
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY + "\n");
+        //number of rows in product table
+        displayView.setText("The product table contains " + allProducts.size() + " products.\n\n");
 
-            // Figure out the index of each column
-            int idColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
-            int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        //TODO: replace this with a call to mDbHelper getProductColumns()
+        //TODO: use for loop to build the header row
+        //create the header for the product list
+        displayView.append(InventoryContract.ProductEntry._ID + " - " +
+                           InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME + " - " +
+                           InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY + "\n");
 
-            // Iterate through all the returned rows in the cursor
-            while (cursor.moveToNext()) {
-                // Use that index to extract the String or Int value of the word
-                // at the current row the cursor is on.
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-
-
-                // Display the values from each column of the current row in the cursor in the TextView
-                displayView.append(("\n" + currentID + " - " + currentName + " - " + currentQuantity));
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
+        //add each product to the view
+        for(ProductModel product: allProducts) {
+            displayView.append(("\n" + product.getId() + " - " + product.getName() + " - " + product.getQuantity()));
         }
     }
 

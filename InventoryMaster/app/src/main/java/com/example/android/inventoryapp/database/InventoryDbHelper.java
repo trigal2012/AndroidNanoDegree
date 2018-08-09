@@ -18,6 +18,12 @@ import java.util.Locale;
 
 import static com.example.android.inventoryapp.database.InventoryContract.CategoryEntry.COLUMN_CATEGORY_NAME;
 import static com.example.android.inventoryapp.database.InventoryContract.CategoryEntry._ID;
+import static com.example.android.inventoryapp.database.InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME;
+import static com.example.android.inventoryapp.database.InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY;
+import static com.example.android.inventoryapp.database.InventoryContract.SupplierEntry.COLUMN_SUPPLIER_EMAIL;
+import static com.example.android.inventoryapp.database.InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME;
+import static com.example.android.inventoryapp.database.InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE;
+import static com.example.android.inventoryapp.database.InventoryContract.SupplierEntry.COLUMN_SUPPLIER_WEB;
 
 
 public class InventoryDbHelper extends SQLiteOpenHelper{
@@ -37,10 +43,10 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     //create the string concatenation for the Products table
     String SQL_CREATE_PRODUCTS_TABLE = "CREATE TABLE " + ProductEntry.TABLE_NAME +  " ("
             + ProductEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + ProductEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
+            + COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
             + ProductEntry.COLUMN_PRODUCT_DESCRIPTION + " TEXT NOT NULL, "
             + ProductEntry.COLUMN_PRODUCT_PRICE + " INTEGER NOT NULL DEFAULT 0, "
-            + ProductEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
+            + COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
             + ProductEntry.COLUMN_PRODUCT_IMAGE_ID + " INTEGER, "
             + ProductEntry.COLUMN_CATEGORY_ID + " INTEGER NOT NULL DEFAULT 0, "
             + ProductEntry.COLUMN_SUPPLIER_ID + " INTEGER NOT NULL DEFAULT 0);";
@@ -48,10 +54,10 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     //create the string concatenation for the Suppliers table
     String SQL_CREATE_SUPPLIERS_TABLE = "CREATE TABLE " + SupplierEntry.TABLE_NAME +  " ("
             + SupplierEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + SupplierEntry.COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
-            + SupplierEntry.COLUMN_SUPPLIER_EMAIL + " TEXT, "
-            + SupplierEntry.COLUMN_SUPPLIER_PHONE + " TEXT NOT NULL, "
-            + SupplierEntry.COLUMN_SUPPLIER_WEB + " TEXT, "
+            + COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
+            + COLUMN_SUPPLIER_EMAIL + " TEXT, "
+            + COLUMN_SUPPLIER_PHONE + " TEXT NOT NULL, "
+            + COLUMN_SUPPLIER_WEB + " TEXT, "
             + SupplierEntry.COLUMN_CATEGORY_ID + " INTEGER);";
 
     //create the string concatenation for the Categories table
@@ -109,10 +115,10 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
         //set the parameters - add a values.put line for each property in the object
         ContentValues values = new ContentValues();
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME, supplierModel.getName());
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_EMAIL, supplierModel.getEmail());
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE, supplierModel.getPhone());
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_WEB, supplierModel.getWeb());
+        values.put(COLUMN_SUPPLIER_NAME, supplierModel.getName());
+        values.put(COLUMN_SUPPLIER_EMAIL, supplierModel.getEmail());
+        values.put(COLUMN_SUPPLIER_PHONE, supplierModel.getPhone());
+        values.put(COLUMN_SUPPLIER_WEB, supplierModel.getWeb());
         values.put(InventoryContract.SupplierEntry.COLUMN_CATEGORY_ID, supplierModel.getCategoryId());
 
         //insert the row
@@ -128,10 +134,10 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
         //set the parameters - add a values.put line for each property in the object
         ContentValues values = new ContentValues();
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, productModel.getName());
+        values.put(COLUMN_PRODUCT_NAME, productModel.getName());
         values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, productModel.getDescription());
         values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, productModel.getPrice());
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, productModel.getQuantity());
+        values.put(COLUMN_PRODUCT_QUANTITY, productModel.getQuantity());
         values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, productModel.getSupplierId());
         values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, productModel.getCategoryId());
 
@@ -175,7 +181,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
                 category.setId(cursor.getInt((cursor.getColumnIndex(_ID))));
                 category.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY_NAME)));
 
-                // adding to tags list
+                // adding to category list
                 categories.add(category);
             } while (cursor.moveToNext());
         }
@@ -184,7 +190,94 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
         return categories;
     }
 
+    //get all suppliers
+    public List<SupplierModel> getAllSuppliers(){
+        //create the array list to hold the category objects
+        List<SupplierModel> suppliers = new ArrayList<SupplierModel>();
 
+        //connect to the database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                InventoryContract.SupplierEntry._ID,
+                InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME,
+                COLUMN_SUPPLIER_EMAIL,
+                COLUMN_SUPPLIER_PHONE,
+                COLUMN_SUPPLIER_WEB};
+
+        // Perform a query on the supplier table
+        Cursor cursor = db.query(
+                InventoryContract.SupplierEntry.TABLE_NAME,   // The table to query
+                projection,            // The columns to return
+                null,                  // The columns for the WHERE clause
+                null,                  // The values for the WHERE clause
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // The sort order
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                SupplierModel supplier = new SupplierModel();
+                supplier.setId(cursor.getInt((cursor.getColumnIndex(_ID))));
+                supplier.setName(cursor.getString(cursor.getColumnIndex(COLUMN_SUPPLIER_NAME)));
+                supplier.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_SUPPLIER_EMAIL)));
+                supplier.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_SUPPLIER_PHONE)));
+                supplier.setWeb(cursor.getString(cursor.getColumnIndex(COLUMN_SUPPLIER_WEB)));
+
+                // adding to supplier list
+                suppliers.add(supplier);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return suppliers;
+    }
+
+    //get all products
+    public List<ProductModel> getAllProducts(){
+        //create the array list to hold the products objects
+        List<ProductModel> products = new ArrayList<ProductModel>();
+
+        //connect to the database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                InventoryContract.ProductEntry._ID,
+                COLUMN_PRODUCT_NAME,
+                COLUMN_PRODUCT_QUANTITY};
+
+
+        // Perform a query on the product table
+        Cursor cursor = db.query(
+                InventoryContract.ProductEntry.TABLE_NAME,   // The table to query
+                projection,            // The columns to return
+                null,                  // The columns for the WHERE clause
+                null,                  // The values for the WHERE clause
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // The sort order
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ProductModel product = new ProductModel();
+                product.setId(cursor.getInt((cursor.getColumnIndex(_ID))));
+                product.setName(cursor.getString(cursor.getColumnIndex(COLUMN_PRODUCT_NAME)));
+                product.setQuantity(cursor.getInt(cursor.getColumnIndex(COLUMN_PRODUCT_QUANTITY)));
+
+                // adding to supplier list
+                products.add(product);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return products;
+    }
     public void deleteData(SQLiteDatabase db) {
         //this will handlie deleting all data - it will not remove the DB, just delete all rows on all tables
         //create the delete string
@@ -199,4 +292,3 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
     }
 }
-
