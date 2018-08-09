@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">InventoryApp</string>
+    <string name="title_activity_settings">Settings</string>
+
+    //Strings used for Tabs
+    <string name="products">Products</string>
+    <string name="categories">Categories</string>
+    <string name="suppliers">Suppliers</string>
+
+    //Strings used for Settings menu
+    <string name="insert_products">Insert Product</string>
+    <string name="insert_suppliers">Insert Supplier</string>
+    <string name="insert_categrories">Insert Category</string>
+    <string name="delete_all_data">Delete all data</string>
+</resources>
