@@ -26,7 +26,7 @@ import static com.example.android.inventoryapp.database.InventoryContract.Suppli
 import static com.example.android.inventoryapp.database.InventoryContract.SupplierEntry.COLUMN_SUPPLIER_WEB;
 
 
-public class InventoryDbHelper extends SQLiteOpenHelper{
+public class InventoryDbHelper extends SQLiteOpenHelper {
 
     //Name of the database file
     private static final String DATABASE_NAME = "inventory.db";
@@ -41,7 +41,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
     //create statements for tables - keeping seperate from onCreate so they can more easily be reused
     //create the string concatenation for the Products table
-    String SQL_CREATE_PRODUCTS_TABLE = "CREATE TABLE " + ProductEntry.TABLE_NAME +  " ("
+    String SQL_CREATE_PRODUCTS_TABLE = "CREATE TABLE " + ProductEntry.TABLE_NAME + " ("
             + ProductEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
             + ProductEntry.COLUMN_PRODUCT_DESCRIPTION + " TEXT NOT NULL, "
@@ -52,7 +52,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
             + ProductEntry.COLUMN_SUPPLIER_ID + " INTEGER NOT NULL DEFAULT 0);";
 
     //create the string concatenation for the Suppliers table
-    String SQL_CREATE_SUPPLIERS_TABLE = "CREATE TABLE " + SupplierEntry.TABLE_NAME +  " ("
+    String SQL_CREATE_SUPPLIERS_TABLE = "CREATE TABLE " + SupplierEntry.TABLE_NAME + " ("
             + SupplierEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
             + COLUMN_SUPPLIER_EMAIL + " TEXT, "
@@ -61,13 +61,13 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
             + SupplierEntry.COLUMN_CATEGORY_ID + " INTEGER);";
 
     //create the string concatenation for the Categories table
-    String SQL_CREATE_CATEGORIES_TABLE = "CREATE TABLE " + CategoryEntry.TABLE_NAME +  " ("
+    String SQL_CREATE_CATEGORIES_TABLE = "CREATE TABLE " + CategoryEntry.TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_CATEGORY_NAME + " TEXT NOT NULL);";
 
     //when the app starts, create a DB if one does not exist
     @Override
-    public void onCreate(SQLiteDatabase db){
+    public void onCreate(SQLiteDatabase db) {
         //execute the SQL statements to actually create the specified tables
         db.execSQL(SQL_CREATE_PRODUCTS_TABLE);
         db.execSQL(SQL_CREATE_SUPPLIERS_TABLE);
@@ -94,7 +94,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
     //--------- CREATE -----------//
     //create a new Category
-    public long createCategory(CategoryModel categoryModel){
+    public long createCategory(CategoryModel categoryModel) {
         //access the database
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -109,7 +109,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //create a new Supplier
-    public long createSupplier(SupplierModel supplierModel){
+    public long createSupplier(SupplierModel supplierModel) {
         //access the database
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -128,7 +128,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //create a new Product
-    public long createProduct(ProductModel productModel){
+    public long createProduct(ProductModel productModel) {
         //access the database
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -152,7 +152,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     //access the database for reading
 
     //get category column names
-    public List getCategoryColumnNames(){
+    public List getCategoryColumnNames() {
         List<String> categoryColumnNames = new ArrayList<String>();
         categoryColumnNames.add(CategoryEntry._ID);
         categoryColumnNames.add(CategoryEntry.COLUMN_CATEGORY_NAME);
@@ -160,7 +160,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //get all Categories
-    public List<CategoryModel> getAllCategories(){
+    public List<CategoryModel> getAllCategories() {
         //create the array list to hold the category objects
         List<CategoryModel> categories = new ArrayList<CategoryModel>();
 
@@ -200,7 +200,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //get supplier column names
-    public List getSupplierColumnNames(){
+    public List getSupplierColumnNames() {
         List<String> supplierColumnNames = new ArrayList<String>();
         supplierColumnNames.add(SupplierEntry._ID);
         supplierColumnNames.add(SupplierEntry.COLUMN_SUPPLIER_NAME);
@@ -209,7 +209,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //get all suppliers
-    public List<SupplierModel> getAllSuppliers(){
+    public List<SupplierModel> getAllSuppliers() {
         //create the array list to hold the category objects
         List<SupplierModel> suppliers = new ArrayList<SupplierModel>();
 
@@ -255,7 +255,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //get product column names
-    public List getProductColumnNames(){
+    public List getProductColumnNames() {
         List<String> productColumnNames = new ArrayList<String>();
         productColumnNames.add(ProductEntry._ID);
         productColumnNames.add(ProductEntry.COLUMN_PRODUCT_NAME);
@@ -264,7 +264,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
     }
 
     //get all products
-    public List<ProductModel> getAllProducts(){
+    public List<ProductModel> getAllProducts() {
         //create the array list to hold the products objects
         List<ProductModel> products = new ArrayList<ProductModel>();
 
@@ -305,6 +305,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
         return products;
     }
+
     public void deleteData(SQLiteDatabase db) {
         //this will handlie deleting all data - it will not remove the DB, just delete all rows on all tables
         //create the delete string

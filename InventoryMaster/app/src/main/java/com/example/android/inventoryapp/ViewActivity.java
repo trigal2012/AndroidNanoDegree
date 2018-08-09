@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import com.example.android.inventoryapp.database.CategoryModel;
 
 import com.example.android.inventoryapp.database.InventoryContract;
@@ -41,12 +42,13 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         displayCategoryData();
         displaySupplierData();
         displayProductData();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -75,16 +77,12 @@ public class ViewActivity extends AppCompatActivity {
                 return true;
 
             case R.id.insert_product_data:
-            Log.i("View activity", "you clicked insert mock data");
-
-            //call the insert mock data method to add products to the DB
-            insertProducts();
-            displayProductData();
-            return true;
+                //call the insert mock data method to add products to the DB
+                insertProducts();
+                displayProductData();
+                return true;
 
             case R.id.delete_all:
-                Log.i("View activity", "you clicked delete data");
-
                 //call the insert mock data method to add many products and categories to the DB
                 deleteData();
                 displayCategoryData();
@@ -111,16 +109,16 @@ public class ViewActivity extends AppCompatActivity {
         displayView.setText("The category table contains " + allCategories.size() + " categories.\n\n");
 
         //create the header row for the category list
-        for(int i = 0; i < categoryColumns.size(); i++) {
-            if(i<categoryColumns.size()-1) {
+        for (int i = 0; i < categoryColumns.size(); i++) {
+            if (i < categoryColumns.size() - 1) {
                 displayView.append(categoryColumns.get(i) + " - ");
-            }else{
+            } else {
                 displayView.append(categoryColumns.get(i) + "\n");
             }
         }
 
         //add each category row to the view
-        for(CategoryModel category: allCategories){
+        for (CategoryModel category : allCategories) {
             displayView.append("\n" + category.getId() + " - " + category.getName());
         }
     }
@@ -140,25 +138,25 @@ public class ViewActivity extends AppCompatActivity {
         displayView.setText("The supplier table contains " + allSuppliers.size() + " suppliers.\n\n");
 
         //create the header row for the supplier list
-        for(int i = 0; i < supplierColumns.size(); i++) {
-            if(i<supplierColumns.size()-1) {
+        for (int i = 0; i < supplierColumns.size(); i++) {
+            if (i < supplierColumns.size() - 1) {
                 displayView.append(supplierColumns.get(i) + " - ");
-            }else{
+            } else {
                 displayView.append(supplierColumns.get(i) + "\n");
             }
         }
 
         //add each supplier to the view
-        for(SupplierModel supplier: allSuppliers) {
+        for (SupplierModel supplier : allSuppliers) {
             displayView.append(("\n" + supplier.getId() + " - " + supplier.getName() + " - " + supplier.getPhone()));
         }
     }
 
     private void displayProductData() {
-        //use the model to get the producy column names
+        //use the model to get the product column names
         List<String> productColumns = mDbHelper.getProductColumnNames();
 
-        //use the model to get all suppliers from the database
+        //use the model to get all products from the database
         List<ProductModel> allProducts = mDbHelper.getAllProducts();
 
         //find products view and make it visible
@@ -169,25 +167,20 @@ public class ViewActivity extends AppCompatActivity {
         displayView.setText("The product table contains " + allProducts.size() + " products.\n\n");
 
         //create the header row for the product list
-        for(int i = 0; i < productColumns.size(); i++) {
-            if(i<productColumns.size()-1) {
+        for (int i = 0; i < productColumns.size(); i++) {
+            if (i < productColumns.size() - 1) {
                 displayView.append(productColumns.get(i) + " - ");
-            }else{
+            } else {
                 displayView.append(productColumns.get(i) + "\n");
             }
         }
 
         //add each product to the view
-        for(ProductModel product: allProducts) {
+        for (ProductModel product : allProducts) {
             displayView.append(("\n" + product.getId() + " - " + product.getName() + " - " + product.getQuantity()));
         }
     }
 
-
-    private void getCategories(){
-        //get all of the categories in the DB using the Category Model
-
-    }
 
     private void insertCategories() {
         //add some mock data here using models
@@ -200,27 +193,23 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     private void insertSuppliers() {
-        //add some mock data here without using models
+        //add some mock data here using models
         //create a supplier
-        SupplierModel supplier1 = new SupplierModel("Mock Supplier Name", "supplier_email@fake.com","555-555-1212","www.supplier.com",0);
+        SupplierModel supplier1 = new SupplierModel("Mock Supplier Name", "supplier_email@fake.com", "555-555-1212", "www.supplier.com", 0);
         //insert into db
         long supplier1_id = mDbHelper.createSupplier(supplier1);
 
     }
 
     private void insertProducts() {
-        //add some mock data here without using models
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
+        //add some mock data here with using models
         // Create a ContentValues object where column names are the keys, append the column values
-        //create a supplier
         ProductModel product1 = new ProductModel("Product Name", "Product Description", 5, 100, 0, 0);
         //insert into db
         long product_id = mDbHelper.createProduct(product1);
-
     }
 
-    private void deleteData(){
+    private void deleteData() {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         mDbHelper.deleteData(db);
     }
