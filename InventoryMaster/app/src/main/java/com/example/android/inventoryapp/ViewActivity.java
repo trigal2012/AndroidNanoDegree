@@ -98,7 +98,7 @@ public class ViewActivity extends AppCompatActivity {
 
     private void displayCategoryData() {
         //use the model to get the category column names
-        //List<CategoryModel> categoryColumns = mDbHelper.getCategoryColumns();
+        List<String> categoryColumns = mDbHelper.getCategoryColumnNames();
 
         //use the model to get all categories from the database
         List<CategoryModel> allCategories = mDbHelper.getAllCategories();
@@ -110,13 +110,16 @@ public class ViewActivity extends AppCompatActivity {
         //number of rows in the category table
         displayView.setText("The category table contains " + allCategories.size() + " categories.\n\n");
 
-        //TODO: replace this with a call to mDbHelper getCategoryColumns()
-        //TODO: use for loop to build the header row
         //create the header row for the category list
-        displayView.append(InventoryContract.CategoryEntry._ID + " - " +
-                           InventoryContract.CategoryEntry.COLUMN_CATEGORY_NAME + "\n");
+        for(int i = 0; i < categoryColumns.size(); i++) {
+            if(i<categoryColumns.size()-1) {
+                displayView.append(categoryColumns.get(i) + " - ");
+            }else{
+                displayView.append(categoryColumns.get(i) + "\n");
+            }
+        }
 
-        //add each category to the view
+        //add each category row to the view
         for(CategoryModel category: allCategories){
             displayView.append("\n" + category.getId() + " - " + category.getName());
         }
@@ -124,7 +127,7 @@ public class ViewActivity extends AppCompatActivity {
 
     private void displaySupplierData() {
         //use the model to get the supplier column names
-        //List<SupplierModel> supplierColumns = mDbHelper.getSupplierColumns();
+        List<String> supplierColumns = mDbHelper.getSupplierColumnNames();
 
         //use the model to get all suppliers from the database
         List<SupplierModel> allSuppliers = mDbHelper.getAllSuppliers();
@@ -136,12 +139,14 @@ public class ViewActivity extends AppCompatActivity {
         //number of rows in supplier table
         displayView.setText("The supplier table contains " + allSuppliers.size() + " suppliers.\n\n");
 
-        //TODO: replace this with a call to mDbHelper getSupplierColumns()
-        //TODO: use for loop to build the header row
-        //create the header row for the sipplier list
-        displayView.append(InventoryContract.SupplierEntry._ID + " - " +
-                           InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME + " - " +
-                           InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE + "\n");
+        //create the header row for the supplier list
+        for(int i = 0; i < supplierColumns.size(); i++) {
+            if(i<supplierColumns.size()-1) {
+                displayView.append(supplierColumns.get(i) + " - ");
+            }else{
+                displayView.append(supplierColumns.get(i) + "\n");
+            }
+        }
 
         //add each supplier to the view
         for(SupplierModel supplier: allSuppliers) {
@@ -151,7 +156,7 @@ public class ViewActivity extends AppCompatActivity {
 
     private void displayProductData() {
         //use the model to get the producy column names
-        //List<ProductModel> productColumns = mDbHelper.getProductColumns();
+        List<String> productColumns = mDbHelper.getProductColumnNames();
 
         //use the model to get all suppliers from the database
         List<ProductModel> allProducts = mDbHelper.getAllProducts();
@@ -163,12 +168,14 @@ public class ViewActivity extends AppCompatActivity {
         //number of rows in product table
         displayView.setText("The product table contains " + allProducts.size() + " products.\n\n");
 
-        //TODO: replace this with a call to mDbHelper getProductColumns()
-        //TODO: use for loop to build the header row
-        //create the header for the product list
-        displayView.append(InventoryContract.ProductEntry._ID + " - " +
-                           InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME + " - " +
-                           InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY + "\n");
+        //create the header row for the product list
+        for(int i = 0; i < productColumns.size(); i++) {
+            if(i<productColumns.size()-1) {
+                displayView.append(productColumns.get(i) + " - ");
+            }else{
+                displayView.append(productColumns.get(i) + "\n");
+            }
+        }
 
         //add each product to the view
         for(ProductModel product: allProducts) {

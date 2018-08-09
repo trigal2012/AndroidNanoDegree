@@ -150,6 +150,15 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
 
     //--------- READ -----------//
     //access the database for reading
+
+    //get category column names
+    public List getCategoryColumnNames(){
+        List<String> categoryColumnNames = new ArrayList<String>();
+        categoryColumnNames.add(CategoryEntry._ID);
+        categoryColumnNames.add(CategoryEntry.COLUMN_CATEGORY_NAME);
+        return categoryColumnNames;
+    }
+
     //get all Categories
     public List<CategoryModel> getAllCategories(){
         //create the array list to hold the category objects
@@ -188,6 +197,15 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
         cursor.close();
 
         return categories;
+    }
+
+    //get supplier column names
+    public List getSupplierColumnNames(){
+        List<String> supplierColumnNames = new ArrayList<String>();
+        supplierColumnNames.add(SupplierEntry._ID);
+        supplierColumnNames.add(SupplierEntry.COLUMN_SUPPLIER_NAME);
+        supplierColumnNames.add(SupplierEntry.COLUMN_SUPPLIER_PHONE);
+        return supplierColumnNames;
     }
 
     //get all suppliers
@@ -234,6 +252,15 @@ public class InventoryDbHelper extends SQLiteOpenHelper{
         cursor.close();
 
         return suppliers;
+    }
+
+    //get product column names
+    public List getProductColumnNames(){
+        List<String> productColumnNames = new ArrayList<String>();
+        productColumnNames.add(ProductEntry._ID);
+        productColumnNames.add(ProductEntry.COLUMN_PRODUCT_NAME);
+        productColumnNames.add(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        return productColumnNames;
     }
 
     //get all products
