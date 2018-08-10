@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/insert_category_data"
-        android:title="@string/insert_categrories"
+        android:title="@string/insert_categories"
         app:showAsAction="never" />
     <item
         android:id="@+id/insert_supplier_data"
