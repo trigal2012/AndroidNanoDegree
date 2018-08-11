@@ -11,11 +11,16 @@ import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.example.android.inventorymaster.database.InventoryContract;
@@ -23,11 +28,6 @@ import com.example.android.inventorymaster.database.InventoryDbHelper;
 
 
 public class ViewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    /**
-     * Database helper that will provide us access to the database
-     */
-    private InventoryDbHelper mDbHelper;
 
     /** Identifier for the product data loader */
     private static final int PRODUCT_LOADER = 0;
@@ -38,7 +38,7 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
+        setContentView(R.layout.main_view);
 
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -55,12 +55,14 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         mCursorAdapter = new InventoryCursorAdapter(this, null);
         productListView.setAdapter(mCursorAdapter);
 
+
         //setup the click listener for each row
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(ViewActivity.this, EditorActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
+                Log.i("Main view", "content uri: " + currentProductUri);
                 intent.setData(currentProductUri);
                 startActivity(intent);
             }
@@ -68,9 +70,34 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
 
+    public void plus_button(View view){
+        Log.i("plus button", "a thing: " + view.getTag());
+    }
+
+
+    private void insertProduct() {
+        //add some mock data here with using models
+        // Create a ContentValues object where column names are the keys, append the column values
+        //TODO: add data validation here before parsing and sending to uri
+        ContentValues values = new ContentValues();
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, "Sample Product");
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, "some stuff about the product will go here");
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, 599);
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 100);
+        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, 0);
+        values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, 0);
+
+        //call the uri and send the data
+        Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
+    }
+
+    private void deleteData() {
+        int rowsDeleted = getContentResolver().delete(InventoryContract.ProductEntry.CONTENT_URI, null, null);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_catalog.xml file.
+        // Inflate the menu options from the res/menu/menu_view.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_view, menu);
         return true;
@@ -106,21 +133,7 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
-    private void insertProduct() {
-        //add some mock data here with using models
-        // Create a ContentValues object where column names are the keys, append the column values
-        //TODO: add data validation here before parsing and sending to uri
-        ContentValues values = new ContentValues();
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, "Sample Product");
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, "some stuff about the product will go here");
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, 599);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 100);
-        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, 0);
-        values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, 0);
 
-        //call the uri and send the data
-        Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
-    }
 
     private void insertCategory(){
         //add some mock data here with using models
@@ -148,9 +161,7 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri newUri = getContentResolver().insert(InventoryContract.SupplierEntry.CONTENT_URI, values);
     }
 
-    private void deleteData() {
-        int rowsDeleted = getContentResolver().delete(InventoryContract.ProductEntry.CONTENT_URI, null, null);
-    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

@@ -12,7 +12,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,9 +37,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Uri mCurrentProductUri;
 
     //vars for the edit fields;
-    private EditText mNameEditText, mDescriptionEditText, mPrice, mQuantity;
-    private Spinner mSupplierSpinner, mCategorySpinner;
-    private int mCategory, mSupplier;
+    private EditText mNameEditText;
+    private EditText mDescriptionEditText;
+    private EditText mPrice;
+    private EditText mQuantity;
+    private Spinner mSupplierSpinner;
+    //private Spinner mCategorySpinner;
+    //private int mCategory;
+    private int mSupplier;
 
     //boolean to track if product has been edited
     private boolean mProductHasChanged = false;
@@ -50,17 +57,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()){
-                case MotionEvent.ACTION_DOWN:
-                    break;
-                case MotionEvent.ACTION_UP:
-                    view.performClick();
-                    break;
-                default:
-                    break;
-            }
             mProductHasChanged = true;
-            return true;
+            return false;
         }
     };
 
@@ -75,16 +73,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
 
+
     //launch the editor activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.editor_view);
+        setContentView(R.layout.product_details);
 
         // Examine the intent that was used to launch this activity
         // in order to figure out if we're creating a new product or editing an existing one.
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
+        Log.i("editor activity", "content uri: " + mCurrentProductUri);
         if (mCurrentProductUri == null) {
             // This is a new product, so change the app bar to say "Add a product"
             setTitle(getString(R.string.add_product));
@@ -107,7 +107,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPrice = findViewById(R.id.price);
         mQuantity = findViewById(R.id.quantity);
         mSupplierSpinner = findViewById(R.id.spinner_supplier);
-        mCategorySpinner = findViewById(R.id.spinner_category);
+        //mCategorySpinner = findViewById(R.id.spinner_category);
 
         //set on touch listeners for these fields
         mNameEditText.setOnKeyListener(mKeyListener);
@@ -125,11 +125,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierSpinner.setOnKeyListener(mKeyListener);
         mSupplierSpinner.setOnTouchListener(mTouchListener);
 
-        mCategorySpinner.setOnKeyListener(mKeyListener);
-        mCategorySpinner.setOnTouchListener(mTouchListener);
+       // mCategorySpinner.setOnKeyListener(mKeyListener);
+        //mCategorySpinner.setOnTouchListener(mTouchListener);
 
         //set up the spinners
-        setupCategorySpinner();
+       // setupCategorySpinner();
         setupSupplierSpinner();
 
     }
@@ -137,7 +137,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //this sets up the category Spinner
     //for now, use hard coded array values
     //TODO: get the category values from the database
-    private void setupCategorySpinner(){
+   /* private void setupCategorySpinner(){
         ArrayAdapter categorySpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_category_options, android.R.layout.simple_spinner_item);
         // Specify dropdown layout style - simple list view with 1 item per line
@@ -169,7 +169,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mCategory = InventoryContract.ProductEntry.CATEGORY_UNKNOWN;
             }
         });
-    }
+    }*/
 
     //this sets up the Supplier Spinner
     //for now, use hard coded array values
@@ -208,6 +208,74 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
+    private void saveProduct() {
+        // Read from input fields
+        // Use trim to eliminate leading or trailing white space
+        String nameString = mNameEditText.getText().toString().trim().toLowerCase();
+        String descriptionString = mDescriptionEditText.getText().toString().trim().toLowerCase();
+        String priceString = mPrice.getText().toString().trim();
+        String quantityString = mQuantity.getText().toString().trim();
+
+
+        // Check if this is supposed to be a new product
+        // and check if all the fields in the editor are blank
+        if (mCurrentProductUri == null &&
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) &&
+                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString) &&
+                mSupplier == InventoryContract.ProductEntry.SUPPLIER_UNKNOWN) {
+               // mCategory == InventoryContract.ProductEntry.CATEGORY_UNKNOWN){
+            // Since no fields were modified, we can return early without creating a new product.
+            // No need to create ContentValues and no need to do any ContentProvider operations.
+            return;
+        }
+
+        // Create a ContentValues object where column names are the keys,
+        // and product attributes from the editor are the values.
+        ContentValues values = new ContentValues();
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, nameString);
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, descriptionString);
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, priceString);
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantityString);
+        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, mSupplier);
+        //values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, mCategory);
+
+
+        // Determine if this is a new or existing product by checking if product uri is null or not
+        if (mCurrentProductUri == null) {
+            // This is a NEW product, so insert a new product into the provider,
+            // returning the content URI for the new product.
+            Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
+
+            // Show a toast message depending on whether or not the insertion was successful.
+            if (newUri == null) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_insert_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Otherwise this is an EXISTING product, so update the product with content URI: product uri
+            // and pass in the new ContentValues. Pass in null for the selection and selection args
+            // because mCurrentProductUri will already identify the correct row in the database that
+            // we want to modify.
+            int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
+
+            // Show a toast message depending on whether or not the update was successful.
+            if (rowsAffected == 0) {
+                // If no rows were affected, then there was an error with the update.
+                Toast.makeText(this, getString(R.string.editor_update_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the update was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_update_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
@@ -216,6 +284,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return true;
     }
 
+    /**
+     * This method is called after invalidateOptionsMenu(), so that the
+     * menu can be updated (some menu items can be hidden or made visible).
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new product, hide the "Delete" menu item.
+        if (mCurrentProductUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -262,21 +344,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     /**
-     * This method is called after invalidateOptionsMenu(), so that the
-     * menu can be updated (some menu items can be hidden or made visible).
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        // If this is a new product, hide the "Delete" menu item.
-        if (mCurrentProductUri == null) {
-            MenuItem menuItem = menu.findItem(R.id.action_delete);
-            menuItem.setVisible(false);
-        }
-        return true;
-    }
-
-    /**
      * This method is called when the back button is pressed.
      */
     @Override
@@ -300,6 +367,109 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Show dialog that there are unsaved changes
         showUnsavedChangesDialog(discardButtonClickListener);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+            // Define a projection that specifies the columns from the table we care about.
+            String[] projection = {
+                    InventoryContract.ProductEntry._ID,
+                    InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
+                    InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE,
+                    InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                    InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION,
+                    //InventoryContract.ProductEntry.COLUMN_CATEGORY_ID,
+                    InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID};
+
+            // This loader will execute the ContentProvider's query method on a background thread
+            return new CursorLoader(this,   // Parent activity context
+                    mCurrentProductUri,   // Provider content URI to query
+                    projection,             // Columns to include in the resulting Cursor
+                    null,                   // No selection clause
+                    null,                   // No selection arguments
+                    null);                  // Default sort order
+        }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        // Bail early if the cursor is null or there is less than 1 row in the cursor
+        if (cursor == null || cursor.getCount() < 1) {
+            return;
+        }
+
+        // Proceed with moving to the first row of the cursor and reading data from it
+        // (This should be the only row in the cursor)
+        if (cursor.moveToFirst()) {
+            // Find the columns of product attributes that we're interested in
+            int nameColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
+            int priceColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
+            int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            int descriptionColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION);
+            int supplierColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID);
+            //int categoryColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID);
+
+
+            // Extract out the value from the Cursor for the given column index
+            String name = cursor.getString(nameColumnIndex);
+            String description = cursor.getString(descriptionColumnIndex);
+            int price = cursor.getInt(priceColumnIndex);
+            int quantity = cursor.getInt(quantityColumnIndex);
+            int supplier = cursor.getInt(supplierColumnIndex);
+            //int category = cursor.getInt(categoryColumnIndex);
+
+            // Update the views on the screen with the values from the database
+            mNameEditText.setText(name);
+            mDescriptionEditText.setText(description);
+            mPrice.setText(Integer.toString(price));
+            mQuantity.setText(Integer.toString(quantity));
+
+            // supplier is a dropdown spinner, so map the constant value from the database
+            // into one of the dropdown options
+            // Then call setSelection() so that option is displayed on screen as the current selection.
+            switch (supplier) {
+                case InventoryContract.ProductEntry.NIKE:
+                    mSupplierSpinner.setSelection(1);
+                    break;
+                case InventoryContract.ProductEntry.ARENA:
+                    mSupplierSpinner.setSelection(2);
+                    break;
+                case InventoryContract.ProductEntry.CERVELO:
+                    mSupplierSpinner.setSelection(3);
+                    break;
+                default:
+                    mSupplierSpinner.setSelection(0);
+                    break;
+            }
+
+            // category is a dropdown spinner, so map the constant value from the database
+            // into one of the dropdown options
+            // Then call setSelection() so that option is displayed on screen as the current selection.
+/*            switch (category) {
+                case InventoryContract.ProductEntry.SWIM:
+                    mCategorySpinner.setSelection(1);
+                    break;
+                case InventoryContract.ProductEntry.BIKE:
+                    mCategorySpinner.setSelection(2);
+                    break;
+                case InventoryContract.ProductEntry.RUN:
+                    mCategorySpinner.setSelection(3);
+                    break;
+                default:
+                    mCategorySpinner.setSelection(0);
+                    break;
+            }*/
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // If the loader is invalidated, clear out all the data from the input fields.
+        mNameEditText.setText("");
+        mDescriptionEditText.setText("");
+        mPrice.setText("");
+        mQuantity.setText("");
+        mSupplierSpinner.setSelection(0);
+        //mCategorySpinner.setSelection(0);
     }
 
     /**
@@ -385,177 +555,5 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Close the activity
         finish();
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Since the editor shows all product attributes, define a projection that contains
-            // Define a projection that specifies the columns from the table we care about.
-            String[] projection = {
-                    InventoryContract.ProductEntry._ID,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION,
-                    InventoryContract.ProductEntry.COLUMN_CATEGORY_ID,
-                    InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID};
-
-            // This loader will execute the ContentProvider's query method on a background thread
-            return new CursorLoader(this,   // Parent activity context
-                    InventoryContract.ProductEntry.CONTENT_URI,   // Provider content URI to query
-                    projection,             // Columns to include in the resulting Cursor
-                    null,                   // No selection clause
-                    null,                   // No selection arguments
-                    null);                  // Default sort order
-        }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Bail early if the cursor is null or there is less than 1 row in the cursor
-        if (cursor == null || cursor.getCount() < 1) {
-            return;
-        }
-
-        // Proceed with moving to the first row of the cursor and reading data from it
-        // (This should be the only row in the cursor)
-        if (cursor.moveToFirst()) {
-            // Find the columns of product attributes that we're interested in
-            int nameColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
-            int descriptionColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION);
-            int supplierColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID);
-            int categoryColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID);
-
-
-            // Extract out the value from the Cursor for the given column index
-            String name = cursor.getString(nameColumnIndex);
-            String description = cursor.getString(descriptionColumnIndex);
-            int price = cursor.getInt(priceColumnIndex);
-            int quantity = cursor.getInt(quantityColumnIndex);
-            int supplier = cursor.getInt(supplierColumnIndex);
-            int category = cursor.getInt(categoryColumnIndex);
-
-            // Update the views on the screen with the values from the database
-            mNameEditText.setText(name);
-            mDescriptionEditText.setText(description);
-            mPrice.setText(Integer.toString(price));
-            mQuantity.setText(Integer.toString(quantity));
-
-            // supplier is a dropdown spinner, so map the constant value from the database
-            // into one of the dropdown options
-            // Then call setSelection() so that option is displayed on screen as the current selection.
-            switch (supplier) {
-                case InventoryContract.ProductEntry.NIKE:
-                    mSupplierSpinner.setSelection(1);
-                    break;
-                case InventoryContract.ProductEntry.ARENA:
-                    mSupplierSpinner.setSelection(2);
-                    break;
-                case InventoryContract.ProductEntry.CERVELO:
-                    mSupplierSpinner.setSelection(3);
-                    break;
-                default:
-                    mSupplierSpinner.setSelection(0);
-                    break;
-            }
-
-            // category is a dropdown spinner, so map the constant value from the database
-            // into one of the dropdown options
-            // Then call setSelection() so that option is displayed on screen as the current selection.
-            switch (category) {
-                case InventoryContract.ProductEntry.SWIM:
-                    mCategorySpinner.setSelection(1);
-                    break;
-                case InventoryContract.ProductEntry.BIKE:
-                    mCategorySpinner.setSelection(2);
-                    break;
-                case InventoryContract.ProductEntry.RUN:
-                    mCategorySpinner.setSelection(3);
-                    break;
-                default:
-                    mCategorySpinner.setSelection(0);
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // If the loader is invalidated, clear out all the data from the input fields.
-        mNameEditText.setText("");
-        mDescriptionEditText.setText("");
-        mPrice.setText("");
-        mQuantity.setText("");
-        mSupplierSpinner.setSelection(0);
-        mCategorySpinner.setSelection(0);
-    }
-
-    private void saveProduct() {
-        // Read from input fields
-        // Use trim to eliminate leading or trailing white space
-        String nameString = mNameEditText.getText().toString().trim().toLowerCase();
-        String descriptionString = mDescriptionEditText.getText().toString().trim().toLowerCase();
-        String priceString = mPrice.getText().toString().trim();
-        String quantityString = mQuantity.getText().toString().trim();
-
-
-        // Check if this is supposed to be a new product
-        // and check if all the fields in the editor are blank
-        if (mCurrentProductUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) &&
-                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString) &&
-                mSupplier == InventoryContract.ProductEntry.SUPPLIER_UNKNOWN &&
-                mCategory == InventoryContract.ProductEntry.CATEGORY_UNKNOWN){
-            // Since no fields were modified, we can return early without creating a new product.
-            // No need to create ContentValues and no need to do any ContentProvider operations.
-            return;
-        }
-
-        // Create a ContentValues object where column names are the keys,
-        // and product attributes from the editor are the values.
-        ContentValues values = new ContentValues();
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, nameString);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, descriptionString);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, priceString);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantityString);
-        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, mSupplier);
-        values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, mCategory);
-
-
-        // Determine if this is a new or existing product by checking if product uri is null or not
-        if (mCurrentProductUri == null) {
-            // This is a NEW product, so insert a new product into the provider,
-            // returning the content URI for the new product.
-            Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
-
-            // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
-                // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_insert_product_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // Otherwise this is an EXISTING product, so update the product with content URI: product uri
-            // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentProductUri will already identify the correct row in the database that
-            // we want to modify.
-            int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
-
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, getString(R.string.editor_update_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_product_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }

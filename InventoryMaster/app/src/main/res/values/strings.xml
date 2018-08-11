@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">inventorymaster</string>
+    <string name="app_name">Inventory Master</string>
 
     //Strings used for Tabs
 

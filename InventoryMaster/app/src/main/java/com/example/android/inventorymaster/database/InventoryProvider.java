@@ -45,12 +45,12 @@ public class InventoryProvider extends ContentProvider {
     //the content provider will match the int values
     //add a uri matcher for each code above
     static{
-        sUriMatcher.addURI(com.example.android.inventorymaster.database.InventoryContract.CONTENT_AUTHORITY, com.example.android.inventorymaster.database.InventoryContract.PATH_PRODUCTS, PRODUCTS);
-        sUriMatcher.addURI(com.example.android.inventorymaster.database.InventoryContract.CONTENT_AUTHORITY, com.example.android.inventorymaster.database.InventoryContract.PATH_PRODUCTS + "/#", PRODUCT_ID);
-        sUriMatcher.addURI(com.example.android.inventorymaster.database.InventoryContract.CONTENT_AUTHORITY, com.example.android.inventorymaster.database.InventoryContract.PATH_CATEGORIES, CATEGORIES);
-        sUriMatcher.addURI(com.example.android.inventorymaster.database.InventoryContract.CONTENT_AUTHORITY, com.example.android.inventorymaster.database.InventoryContract.PATH_CATEGORIES + "/#", CATEGORY_ID);
-        sUriMatcher.addURI(com.example.android.inventorymaster.database.InventoryContract.CONTENT_AUTHORITY, com.example.android.inventorymaster.database.InventoryContract.PATH_SUPPLIERS, SUPPLIERS);
-        sUriMatcher.addURI(com.example.android.inventorymaster.database.InventoryContract.CONTENT_AUTHORITY, com.example.android.inventorymaster.database.InventoryContract.PATH_SUPPLIERS + "/#", SUPPLIER_ID);
+        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_PRODUCTS, PRODUCTS);
+        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_PRODUCTS + "/#", PRODUCT_ID);
+        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_CATEGORIES, CATEGORIES);
+        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_CATEGORIES + "/#", CATEGORY_ID);
+        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_SUPPLIERS, SUPPLIERS);
+        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_SUPPLIERS + "/#", SUPPLIER_ID);
     }
 
     //getType runs a switch statement to check the incoming calls to a URI to see if they
@@ -62,29 +62,29 @@ public class InventoryProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
-                return com.example.android.inventorymaster.database.InventoryContract.ProductEntry.CONTENT_LIST_TYPE;
+                return InventoryContract.ProductEntry.CONTENT_LIST_TYPE;
             case PRODUCT_ID:
-                return com.example.android.inventorymaster.database.InventoryContract.ProductEntry.CONTENT_ITEM_TYPE;
+                return InventoryContract.ProductEntry.CONTENT_ITEM_TYPE;
             case CATEGORIES:
-                return com.example.android.inventorymaster.database.InventoryContract.CategoryEntry.CONTENT_LIST_TYPE;
+                return InventoryContract.CategoryEntry.CONTENT_LIST_TYPE;
             case CATEGORY_ID:
-                return com.example.android.inventorymaster.database.InventoryContract.CategoryEntry.CONTENT_ITEM_TYPE;
+                return InventoryContract.CategoryEntry.CONTENT_ITEM_TYPE;
             case SUPPLIERS:
-                return com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.CONTENT_LIST_TYPE;
+                return InventoryContract.SupplierEntry.CONTENT_LIST_TYPE;
             case SUPPLIER_ID:
-                return com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.CONTENT_ITEM_TYPE;
+                return InventoryContract.SupplierEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
     }
 
     /** Database helper object */
-    private com.example.android.inventorymaster.database.InventoryDbHelper mDbHelper;
+    private InventoryDbHelper mDbHelper;
 
     @Override
     public boolean onCreate() {
         //initializing the dbHelper object
-        mDbHelper = new com.example.android.inventorymaster.database.InventoryDbHelper(getContext());
+        mDbHelper = new InventoryDbHelper(getContext());
         return true;
     }
 
@@ -188,7 +188,7 @@ public class InventoryProvider extends ContentProvider {
         }
 
         // Notify all listeners that the data has changed for the product content URI
-        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
+        getContext().getContentResolver().notifyChange(uri, null);
 
         // Return the new URI with the ID (of the newly inserted row) appended at the end
         return ContentUris.withAppendedId(uri, id);
@@ -223,7 +223,7 @@ public class InventoryProvider extends ContentProvider {
         long id = database.insert(com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
-            Log.e(SUPLIERS_LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(SUPPLIERS_LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
 
