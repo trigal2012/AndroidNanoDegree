@@ -30,7 +30,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
                 + ProductEntry.COLUMN_PRODUCT_PRICE + " INTEGER NOT NULL DEFAULT 0, "
                 + ProductEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
                 + ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME + " TEXT NOT NULL, "
-                + ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE + " INTEGER NOT NULL);";
+                + ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE + " BLOB NOT NULL);";
         db.execSQL(SQL_CREATE_PRODUCTS_TABLE);
     }
 

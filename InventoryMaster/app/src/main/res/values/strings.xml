@@ -58,6 +58,14 @@
     <string name="price_label">Price</string>
     <string name="supplier_details">Supplier Details</string>
     <string name="empty_field_star">*</string>
+    <string name="required_values">* Required values</string>
+    <string name="delete_product_button">delete product button</string>
+    <string name="call_supplier_button">call supplier button</string>
+    <string name="subtract_1_from_quantity_button">subtract 1 from quantity button</string>
+    <string name="add_1_to_quantity_button">add 1 to quantity button</string>
+    <string name="product_decription">product decription</string>
+    <string name="all_products">ALL PRODUCTS</string>
+    <string name="no_products">No Products in the database. Click the Plus (+) button to add some.</string>
 
 
 </resources>

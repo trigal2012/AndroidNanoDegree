@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventorymaster.database.InventoryContract;
-import com.example.android.inventorymaster.utility.PhoneFormatter;
 
 import java.text.NumberFormat;
 import java.util.Currency;
@@ -100,26 +100,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_details);
 
-        // Examine the intent that was used to launch this activity
-        // in order to figure out if we're creating a new product or editing an existing one.
-        Intent intent = getIntent();
-        mCurrentProductUri = intent.getData();
-        if (mCurrentProductUri == null) {
-            // This is a new product, so change the app bar to say "Add a product"
-            setTitle(getString(R.string.add_product));
-
-            // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a product that hasn't been created yet.)
-            invalidateOptionsMenu();
-        } else {
-            // Otherwise this is an existing product, so change app bar to say "Edit product"
-            setTitle(getString(R.string.edit_product));
-
-            // Initialize a loader to read the product data from the database
-            // and display the current values in the editor
-            getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
-        }
-
         //Find all views to read data from
         mNameEditText = findViewById(R.id.name);
         mDescriptionEditText = findViewById(R.id.description);
@@ -155,8 +135,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierPhone.setOnTouchListener(mTouchListener);
 
         //to make sure the price field is formatted to 2 decimals
-        //using this help: https://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext/16684661
-        //https://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext/16684661
         mPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -180,7 +158,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        //no leading zeros for quantity
+        //no leading zeros for quantity and handling button status
         mQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -193,18 +171,46 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void afterTextChanged(Editable s) {
+                //quantity can't start with 0
                 if (s.toString().length() > 1 && s.toString().startsWith("0")) {
                     s.clear();
                 }
-                if (s.toString().equals("0")){
-                    mMinusBtn.setEnabled(false);
-                    mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
-                }
-                if (!s.toString().equals("0")){
+                //enable minus/plus buttons if quantity is not equal to 0 and is not null
+                if (!s.toString().equals("0") || !s.toString().equals("")){
+                    mPlusBtn.setEnabled(true);
+                    mPlusBtn.setColorFilter(getResources().getColor(R.color.green));
                     mMinusBtn.setEnabled(true);
                     mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
                 }
+                //if there is no value for quantity, disable plus and minus buttons
+                if(s.toString().equals("") || s.toString().equals("0") ){
+                    mPlusBtn.setEnabled(false);
+                    mPlusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+                    mMinusBtn.setEnabled(false);
+                    mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+                }
             }
+        });
+
+        //phone number formatting
+        mSupplierPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        PhoneNumberUtils.formatNumber(s.toString(), "US");
+                    } else {
+                        PhoneNumberUtils.formatNumber(s.toString());
+                    }
+                }
         });
 
         //set onClicklistener for phone icon
@@ -237,6 +243,35 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 deleteConfirmationDialog();
             }
         });
+
+        // Examine the intent that was used to launch this activity
+        // in order to figure out if we're creating a new product or editing an existing one.
+        Intent intent = getIntent();
+        mCurrentProductUri = intent.getData();
+        if (mCurrentProductUri == null) {
+            // This is a new product, so change the app bar to say "Add a product"
+            setTitle(getString(R.string.add_product));
+
+            // Invalidate the options menu, so the "Delete" menu option can be hidden.
+            // (It doesn't make sense to delete a product that hasn't been created yet.)
+            invalidateOptionsMenu();
+
+            //set minus/plu button to gray and disable since there is not data yet for the quantity
+            mPlusBtn.setEnabled(false);
+            mPlusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+            mMinusBtn.setEnabled(false);
+            mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+
+        } else {
+            // Otherwise this is an existing product, so change app bar to say "Edit product"
+            setTitle(getString(R.string.edit_product));
+
+            // Initialize a loader to read the product data from the database
+            // and display the current values in the editor
+            getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
+        }
+
+
 
     }
 
@@ -481,10 +516,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 price = price + ".00";
             }
 
-            //configure phone text
-            supplierPhone = formatPhone(supplierPhone);
-            Log.i("setting supplier phoe", "" + supplierPhone);
-
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mDescriptionEditText.setText(description);
@@ -499,6 +530,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mMinusBtn.setEnabled(false);
                 mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
 
+            }else{
+                mPlusBtn.setEnabled(true);
+                mPlusBtn.setColorFilter(getResources().getColor(R.color.green));
+                mMinusBtn.setEnabled(true);
+                mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
             }
         }
     }
