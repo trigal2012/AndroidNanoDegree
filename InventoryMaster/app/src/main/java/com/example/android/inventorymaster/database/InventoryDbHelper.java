@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.inventorymaster.database.InventoryContract.ProductEntry;
 
-public class InventoryDbHelper extends SQLiteOpenHelper {
+class InventoryDbHelper extends SQLiteOpenHelper {
 
     //Name of the database file
     private static final String DATABASE_NAME = "inventory.db";

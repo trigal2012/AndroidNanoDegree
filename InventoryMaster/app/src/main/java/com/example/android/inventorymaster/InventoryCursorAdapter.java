@@ -2,7 +2,6 @@ package com.example.android.inventorymaster;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +12,14 @@ import android.widget.TextView;
 
 import com.example.android.inventorymaster.database.InventoryContract;
 
-import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
 
 class InventoryCursorAdapter extends CursorAdapter {
 
-    //use for formatting quantiy and currency values
-    Locale locale = Locale.getDefault();
-    String currencySymbol = Currency.getInstance(locale).getSymbol();
-    NumberFormat nf = NumberFormat.getInstance(locale);
+    //use for formatting quantity and currency values
+    private final Locale locale = Locale.getDefault();
+    private final String currencySymbol = Currency.getInstance(locale).getSymbol();
 
     private Context context;
 
@@ -108,7 +105,6 @@ class InventoryCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 if (context instanceof ViewActivity) {
-                    Log.i("cursor adapter", "plus button clicked");
                     ((ViewActivity) context).buttonClicked_plus(view);
                 }
             }

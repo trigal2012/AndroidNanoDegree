@@ -1,5 +1,6 @@
 package com.example.android.inventorymaster;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -17,7 +18,6 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,11 +39,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //identifier for the loader
     private static final int EXISTING_PRODUCT_LOADER = 0;
     //use for formatting quantity and currency values
-    static Locale locale = Locale.getDefault();
-    private static boolean mError = false;
-    String currencySymbol = Currency.getInstance(locale).getSymbol();
-    NumberFormat nf = NumberFormat.getInstance(locale);
-    int quantity;
+    private static final Locale locale = Locale.getDefault();
+    private final String currencySymbol = Currency.getInstance(locale).getSymbol();
     //content uri for existing product
     private Uri mCurrentProductUri;
     //vars for the edit fields;
@@ -58,7 +55,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private ImageButton mPlusBtn;
     private ImageButton mMinusBtn;
     private ImageButton mPhoneBtn;
-    private TextView mRequied;
+    private TextView mRequired;
     private int errorNum = 0;
     //boolean to track if product has been edited
     private boolean mProductHasChanged = false;
@@ -68,6 +65,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     //this is used to determine when someone access the view by touching the screen
     private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             mProductHasChanged = true;
@@ -86,20 +84,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
 
-    //used to format the supplier phone number
-    public static String formatPhone(String phone) {
-        String formattedNumber = null;
-        Log.i("format phone", "build version: " + Build.VERSION.SDK_INT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            formattedNumber = PhoneNumberUtils.formatNumber(phone, "US");
-            return formattedNumber;
-        } else {
-            formattedNumber = PhoneNumberUtils.formatNumber(phone);
-            return formattedNumber;
-        }
-    }
-
     //launch the editor activity
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +103,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPlusBtn = findViewById(R.id.plus_button);
         mMinusBtn = findViewById(R.id.minus_button);
         mDelete = findViewById(R.id.delete_product);
-        mRequied = findViewById(R.id.required_label);
+        mRequired = findViewById(R.id.required_label);
 
         //set on touch listeners for these fields
         mNameEditText.setOnKeyListener(mKeyListener);
@@ -221,7 +207,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        //set onClicklistener for phone icon
+        //set onClickListener for phone icon
         mPhoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,7 +215,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        //onclicklistener for quantity buttons
+        //onClickListener for quantity buttons
         mPlusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -292,15 +278,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //the user can change the phone number and elect to call the supplier
     //via the phone icon before saving their changes
     //this method will use the phone number entered in the UI
-    public void sendToPhoneApp() {
+    private void sendToPhoneApp() {
         Intent sendToDialer = new Intent(Intent.ACTION_DIAL);
         sendToDialer.setData(Uri.parse("tel:" + mSupplierPhone.getText().toString().trim()));
         startActivity(sendToDialer);
     }
 
-    public void buttonClicked_quantity(View view) {
+    private void buttonClicked_quantity(View view) {
         //do the math to increase the quantity value, only allow 999999 as the max
-        quantity = Integer.parseInt(mQuantity.getText().toString());
+        int quantity = Integer.parseInt(mQuantity.getText().toString());
         if (view.getId() == mPlusBtn.getId()) {
             quantity = quantity + 1;
         } else if (view.getId() == mMinusBtn.getId()) {
@@ -339,9 +325,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         validateField(supplierPhone, mSupplierPhone);
 
         if (errorNum > 0) {
-            mRequied.setTextColor(getResources().getColor(R.color.red));
+            mRequired.setTextColor(getResources().getColor(R.color.red));
         } else {
-            mRequied.setTextColor(getResources().getColor(R.color.secondaryTextColor));
+            mRequired.setTextColor(getResources().getColor(R.color.secondaryTextColor));
 
 
             // Create a ContentValues object where column names are the keys,
@@ -505,7 +491,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
             // Find the columns of product attributes that we're interested in
-            int productIdIndex = cursor.getColumnIndex(InventoryContract.ProductEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
             int priceColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);

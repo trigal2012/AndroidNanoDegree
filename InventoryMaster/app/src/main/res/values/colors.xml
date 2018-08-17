@@ -22,4 +22,9 @@
     <color name="disable_gray">#b0bec5</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#3352FF</color>
+    <color name="drop_shadow_1">#20494949</color>
+    <color name="drop_shadow_2">#30494949</color>
+    <color name="drop_shadow_3">#10494949</color>
+    <color name="drop_shadow_4">#70494949</color>
+
 </resources>

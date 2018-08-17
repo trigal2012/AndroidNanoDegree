@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -51,7 +52,7 @@ public class InventoryProvider extends ContentProvider {
     //it's not likely that this app will cause an exception however calls from outside this app could trigger an exception
     //if the correct URI path is not called
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
@@ -80,7 +81,7 @@ public class InventoryProvider extends ContentProvider {
 
     //***** READ method ****
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
         // Get readable database
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
@@ -118,7 +119,7 @@ public class InventoryProvider extends ContentProvider {
 
     //***** CREATE method ****
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
@@ -150,7 +151,7 @@ public class InventoryProvider extends ContentProvider {
         }
 
         // Notify all listeners that the data has changed for the product content URI
-        getContext().getContentResolver().notifyChange(uri, null);
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
 
         // Return the new URI with the ID (of the newly inserted row) appended at the end
         return ContentUris.withAppendedId(uri, id);
@@ -158,7 +159,7 @@ public class InventoryProvider extends ContentProvider {
 
     //***** UPDATE method ****
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection,
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
@@ -208,7 +209,7 @@ public class InventoryProvider extends ContentProvider {
 
     //***** DELETE method ****
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -259,15 +260,12 @@ public class InventoryProvider extends ContentProvider {
     }
 
     private int checkQuantity(ContentValues values) {
-        Log.i("quantity checker", "beore if");
         int quantityCheck = 1;
         String productQuantity = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
         if (!TextUtils.isEmpty(productQuantity)) {
-            Log.i("quantity checker", "if");
 
             quantityCheck = 0;
         }
-        Log.i("quantity checker", "quantity checker: " + quantityCheck);
 
         return quantityCheck;
     }

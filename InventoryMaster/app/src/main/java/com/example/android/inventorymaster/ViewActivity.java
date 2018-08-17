@@ -30,10 +30,6 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private static final int PRODUCT_LOADER = 0;
     /**
-     * Vars for fab button
-     */
-    FloatingActionButton fab;
-    /**
      * Adapter for the ListView
      */
     private InventoryCursorAdapter mCursorAdapter;
@@ -44,7 +40,10 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.main_view);
 
         // Setup FAB to open EditorActivity
-        fab = findViewById(R.id.fab);
+        /*
+      Vars for fab button
+     */
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
