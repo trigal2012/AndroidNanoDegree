@@ -9,26 +9,40 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventorymaster.database.InventoryContract;
+import com.example.android.inventorymaster.utility.NumberInputFilter;
+import com.example.android.inventorymaster.utility.PhoneFormatter;
 
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
+
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    //use for formatting quantiy and currency values
+    Locale locale = Locale.getDefault();
+    String currencySymbol = Currency.getInstance(locale).getSymbol();
+    NumberFormat nf = NumberFormat.getInstance(locale);
 
     //identifier for the loader
     private static final int EXISTING_PRODUCT_LOADER = 0;
@@ -41,13 +55,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mDescriptionEditText;
     private EditText mPrice;
     private EditText mQuantity;
-    private Spinner mSupplierSpinner;
-    //private Spinner mCategorySpinner;
-    //private int mCategory;
-    private int mSupplier;
+    private TextView mCurrencySymbol;
+    private EditText mSupplierName;
+    private EditText mSupplierPhone;
+    private ImageButton mSave;
+    private ImageButton mDelete;
+    private ImageButton mPlusBtn;
+    private ImageButton mMinusBtn;
+    private ImageButton mPhoneBtn;
+    private TextView mRequied;
+    private int errorNum = 0;
+
+    int quantity;
 
     //boolean to track if product has been edited
     private boolean mProductHasChanged = false;
+
+    private static boolean mError = false;
 
     /**
      * OnTouchListener that listens for any user touches on a View, implying that they are modifying
@@ -65,9 +89,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //this is used to determine if changes were made from the keyboard without touching the screen first
     //see this for reference
     //https://github.com/udacity/ud845-Pets/commit/bea7d9080f06d447892c634f6271cb83eef9762b#commitcomment-29958129
-    private final View.OnKeyListener mKeyListener = new View.OnKeyListener(){
+    private final View.OnKeyListener mKeyListener = new View.OnKeyListener() {
         @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event){
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
             mProductHasChanged = true;
             return false;
         }
@@ -84,7 +108,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // in order to figure out if we're creating a new product or editing an existing one.
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
-        Log.i("editor activity", "content uri: " + mCurrentProductUri);
         if (mCurrentProductUri == null) {
             // This is a new product, so change the app bar to say "Add a product"
             setTitle(getString(R.string.add_product));
@@ -106,8 +129,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mDescriptionEditText = findViewById(R.id.description);
         mPrice = findViewById(R.id.price);
         mQuantity = findViewById(R.id.quantity);
-        mSupplierSpinner = findViewById(R.id.spinner_supplier);
-        //mCategorySpinner = findViewById(R.id.spinner_category);
+        mSupplierName = findViewById(R.id.supplierName);
+        mSupplierPhone = findViewById(R.id.supplierPhone);
+        mCurrencySymbol = findViewById(R.id.currency_symbol);
+        mPhoneBtn = findViewById(R.id.phone_icon);
+        mPlusBtn = findViewById(R.id.plus_button);
+        mMinusBtn = findViewById(R.id.minus_button);
+        mDelete = findViewById(R.id.delete_product);
+        mRequied = findViewById(R.id.required_label);
 
         //set on touch listeners for these fields
         mNameEditText.setOnKeyListener(mKeyListener);
@@ -122,90 +151,107 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantity.setOnKeyListener(mKeyListener);
         mQuantity.setOnTouchListener(mTouchListener);
 
-        mSupplierSpinner.setOnKeyListener(mKeyListener);
-        mSupplierSpinner.setOnTouchListener(mTouchListener);
 
-       // mCategorySpinner.setOnKeyListener(mKeyListener);
-        //mCategorySpinner.setOnTouchListener(mTouchListener);
+        mSupplierName.setOnKeyListener(mKeyListener);
+        mSupplierName.setOnTouchListener(mTouchListener);
 
-        //set up the spinners
-       // setupCategorySpinner();
-        setupSupplierSpinner();
+        mSupplierPhone.setOnKeyListener(mKeyListener);
+        mSupplierPhone.setOnTouchListener(mTouchListener);
+
+        //to make sure the price field is formatted to 2 decimals
+        mPrice.setFilters(new InputFilter[]{new NumberInputFilter(2)});
+
+        //no leading zeros for quantity
+        mQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 1 && s.toString().startsWith("0")) {
+                    s.clear();
+                }
+                if (s.toString().equals("0")){
+                    mMinusBtn.setEnabled(false);
+                    mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+                }
+                if (!s.toString().equals("0")){
+                    mMinusBtn.setEnabled(true);
+                    mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
+                }
+            }
+        });
+
+        //set onClicklistener for phone icon
+        mPhoneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToPhoneApp();
+            }
+        });
+
+        //onclicklistener for quantity buttons
+        mPlusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonClicked_quantity(view);
+            }
+        });
+
+        mMinusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonClicked_quantity(view);
+            }
+        });
+
+        //set on click listener for delete product
+        mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteConfirmationDialog();
+            }
+        });
 
     }
 
-    //this sets up the category Spinner
-    //for now, use hard coded array values
-    //TODO: get the category values from the database
-   /* private void setupCategorySpinner(){
-        ArrayAdapter categorySpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.array_category_options, android.R.layout.simple_spinner_item);
-        // Specify dropdown layout style - simple list view with 1 item per line
-        categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        // Apply the adapter to the spinner
-        mCategorySpinner.setAdapter(categorySpinnerAdapter);
+    //the supplier phone number is filled in based on values from the DB
+    //the user can change the phone number and elect to call the supplier
+    //via the phone icon before saving their changes
+    //this method will use the phone number entered in the UI
+    public void sendToPhoneApp() {
+        Intent sendToDialer = new Intent(Intent.ACTION_DIAL);
+        sendToDialer.setData(Uri.parse("tel:" + mSupplierPhone.getText().toString().trim()));
+        startActivity(sendToDialer);
+    }
 
-        // Set the integer mSelected to the constant values
-        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals(getString(R.string.swim))) {
-                        mCategory = InventoryContract.ProductEntry.SWIM;
-                    } else if (selection.equals(getString(R.string.bike))) {
-                        mCategory = InventoryContract.ProductEntry.BIKE;
-                    } else if (selection.equals(getString(R.string.run))) {
-                        mCategory = InventoryContract.ProductEntry.RUN;
-                    } else {
-                        mCategory = InventoryContract.ProductEntry.CATEGORY_UNKNOWN;
-                    }
-                }
-            }
+    public void buttonClicked_quantity(View view) {
+        //do the math to increase the quantity value, only allow 999999 as the max
+        quantity = Integer.parseInt(mQuantity.getText().toString());
+        if(view.getId() == mPlusBtn.getId()) {
+                quantity = quantity + 1;
+        }else if(view.getId() == mMinusBtn.getId()){
+            if (quantity > 0)
+                quantity = quantity - 1;
+        }
 
-            // Because AdapterView is an abstract class, onNothingSelected must be defined
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                mCategory = InventoryContract.ProductEntry.CATEGORY_UNKNOWN;
-            }
-        });
-    }*/
+        //update quantity field with new value
+        mQuantity.setText(Integer.toString(quantity));
 
-    //this sets up the Supplier Spinner
-    //for now, use hard coded array values
-    //TODO: get the supplier values from the database
-    private void setupSupplierSpinner(){
-        ArrayAdapter supplierSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.array_supplier_options, android.R.layout.simple_spinner_item);
-        // Specify dropdown layout style - simple list view with 1 item per line
-        supplierSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        // Apply the adapter to the spinner
-        mSupplierSpinner.setAdapter(supplierSpinnerAdapter);
-
-        // Set the integer mSelected to the constant values
-        mSupplierSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals(getString(R.string.nike))) {
-                        mSupplier = InventoryContract.ProductEntry.NIKE;
-                    } else if (selection.equals(getString(R.string.arena))) {
-                        mSupplier = InventoryContract.ProductEntry.ARENA;
-                    } else if (selection.equals(getString(R.string.cervelo))) {
-                        mSupplier = InventoryContract.ProductEntry.CERVELO;
-                    } else {
-                        mSupplier = InventoryContract.ProductEntry.SUPPLIER_UNKNOWN;
-                    }
-                }
-            }
-
-            // Because AdapterView is an abstract class, onNothingSelected must be defined
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                mSupplier = InventoryContract.ProductEntry.SUPPLIER_UNKNOWN;
-            }
-        });
+        //update button action
+        if (quantity == 0 || mQuantity.getText().toString().isEmpty() || mQuantity.getText().toString().equals("")) {
+            mMinusBtn.setEnabled(false);
+            mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+        } else {
+            mMinusBtn.setEnabled(true);
+            mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
+        }
     }
 
     private void saveProduct() {
@@ -215,63 +261,70 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String descriptionString = mDescriptionEditText.getText().toString().trim().toLowerCase();
         String priceString = mPrice.getText().toString().trim();
         String quantityString = mQuantity.getText().toString().trim();
+        String supplierName = mSupplierName.getText().toString().trim();
+        String supplierPhone = mSupplierPhone.getText().toString().trim();
 
+        Log.i("save", quantityString);
 
-        // Check if this is supposed to be a new product
-        // and check if all the fields in the editor are blank
-        if (mCurrentProductUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) &&
-                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString) &&
-                mSupplier == InventoryContract.ProductEntry.SUPPLIER_UNKNOWN) {
-               // mCategory == InventoryContract.ProductEntry.CATEGORY_UNKNOWN){
-            // Since no fields were modified, we can return early without creating a new product.
-            // No need to create ContentValues and no need to do any ContentProvider operations.
-            return;
+        //make sure fields are not null or empty string, if so, post error to user
+        validateField(nameString, mNameEditText);
+        validateField(priceString, mPrice);
+        validateField(quantityString, mQuantity);
+        validateField(supplierName, mSupplierName);
+        validateField(supplierPhone, mSupplierPhone);
+
+        if(errorNum > 0){
+            mRequied.setTextColor(getResources().getColor(R.color.red));
+        }else{
+            mRequied.setTextColor(getResources().getColor(R.color.secondaryTextColor));
         }
 
-        // Create a ContentValues object where column names are the keys,
-        // and product attributes from the editor are the values.
-        ContentValues values = new ContentValues();
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, nameString);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, descriptionString);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, priceString);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantityString);
-        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, mSupplier);
-        //values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, mCategory);
+        if(errorNum == 0){
+
+            // Create a ContentValues object where column names are the keys,
+            // and product attributes from the editor are the values.
+            ContentValues values = new ContentValues();
+            values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, nameString);
+            values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, descriptionString);
+            values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, priceString);
+            values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantityString);
+            values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, supplierName);
+            values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, supplierPhone);
 
 
-        // Determine if this is a new or existing product by checking if product uri is null or not
-        if (mCurrentProductUri == null) {
-            // This is a NEW product, so insert a new product into the provider,
-            // returning the content URI for the new product.
-            Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
+            // Determine if this is a new or existing product by checking if product uri is null or not
+            if (mCurrentProductUri == null) {
+                // This is a NEW product, so insert a new product into the provider,
+                // returning the content URI for the new product.
+                Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
 
-            // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
-                // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
-                        Toast.LENGTH_SHORT).show();
+                // Show a toast message depending on whether or not the insertion was successful.
+                if (newUri == null) {
+                    // If the new content URI is null, then there was an error with insertion.
+                    Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // Otherwise, the insertion was successful and we can display a toast.
+                    Toast.makeText(this, getString(R.string.editor_insert_product_successful),
+                            Toast.LENGTH_SHORT).show();
+                }
             } else {
-                // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_insert_product_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // Otherwise this is an EXISTING product, so update the product with content URI: product uri
-            // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentProductUri will already identify the correct row in the database that
-            // we want to modify.
-            int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
+                // Otherwise this is an EXISTING product, so update the product with content URI: product uri
+                // and pass in the new ContentValues. Pass in null for the selection and selection args
+                // because mCurrentProductUri will already identify the correct row in the database that
+                // we want to modify.
+                int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
 
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, getString(R.string.editor_update_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_product_successful),
-                        Toast.LENGTH_SHORT).show();
+                // Show a toast message depending on whether or not the update was successful.
+                if (rowsAffected == 0) {
+                    // If no rows were affected, then there was an error with the update.
+                    Toast.makeText(this, getString(R.string.editor_update_product_failed),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // Otherwise, the update was successful and we can display a toast.
+                    Toast.makeText(this, getString(R.string.editor_update_product_successful),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -307,13 +360,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 // Save product to database
                 saveProduct();
-                // Exit activity
-                finish();
+                // Exit activity if there are no input errors
+                if(!mError) {
+                    finish();
+                }
+                errorNum = 0;
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Pop up confirmation dialog for deletion
-                showDeleteConfirmationDialog();
+                deleteConfirmationDialog();
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
@@ -325,19 +381,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 }
 
                 // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-                // Create a click listener to handle the user confirming that
-                // changes should be discarded.
-                DialogInterface.OnClickListener discardButtonClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // User clicked "Discard" button, navigate to parent activity.
-                                NavUtils.navigateUpFromSameTask(EditorActivity.this);
-                            }
-                        };
-
-                // Show a dialog that notifies the user they have unsaved changes
-                showUnsavedChangesDialog(discardButtonClickListener);
+                unsavedChangesDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -353,42 +397,30 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             super.onBackPressed();
             return;
         }
-
-        // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-        // Create a click listener to handle the user confirming that changes should be discarded.
-        DialogInterface.OnClickListener discardButtonClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // User clicked "Discard" button, close the current activity.
-                        finish();
-                    }
-                };
-
         // Show dialog that there are unsaved changes
-        showUnsavedChangesDialog(discardButtonClickListener);
+        unsavedChangesDialog();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-            // Define a projection that specifies the columns from the table we care about.
-            String[] projection = {
-                    InventoryContract.ProductEntry._ID,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                    InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION,
-                    //InventoryContract.ProductEntry.COLUMN_CATEGORY_ID,
-                    InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID};
+        // Define a projection that specifies the columns from the table we care about.
+        String[] projection = {
+                InventoryContract.ProductEntry._ID,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE};
 
-            // This loader will execute the ContentProvider's query method on a background thread
-            return new CursorLoader(this,   // Parent activity context
-                    mCurrentProductUri,   // Provider content URI to query
-                    projection,             // Columns to include in the resulting Cursor
-                    null,                   // No selection clause
-                    null,                   // No selection arguments
-                    null);                  // Default sort order
-        }
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,   // Parent activity context
+                mCurrentProductUri,   // Provider content URI to query
+                projection,             // Columns to include in the resulting Cursor
+                null,                   // No selection clause
+                null,                   // No selection arguments
+                null);                  // Default sort order
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -401,63 +433,31 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
             // Find the columns of product attributes that we're interested in
+            int productIdIndex = cursor.getColumnIndex(InventoryContract.ProductEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
             int priceColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
             int descriptionColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION);
-            int supplierColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID);
-            //int categoryColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID);
-
+            int supplierNameColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
+            int supplierPhoneColumnIndex = cursor.getColumnIndex(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
 
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
             String description = cursor.getString(descriptionColumnIndex);
-            int price = cursor.getInt(priceColumnIndex);
+            String price = cursor.getString(priceColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
-            int supplier = cursor.getInt(supplierColumnIndex);
-            //int category = cursor.getInt(categoryColumnIndex);
+            String supplierName = cursor.getString(supplierNameColumnIndex);
+            String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
+
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mDescriptionEditText.setText(description);
-            mPrice.setText(Integer.toString(price));
+            mPrice.setText(price);
             mQuantity.setText(Integer.toString(quantity));
-
-            // supplier is a dropdown spinner, so map the constant value from the database
-            // into one of the dropdown options
-            // Then call setSelection() so that option is displayed on screen as the current selection.
-            switch (supplier) {
-                case InventoryContract.ProductEntry.NIKE:
-                    mSupplierSpinner.setSelection(1);
-                    break;
-                case InventoryContract.ProductEntry.ARENA:
-                    mSupplierSpinner.setSelection(2);
-                    break;
-                case InventoryContract.ProductEntry.CERVELO:
-                    mSupplierSpinner.setSelection(3);
-                    break;
-                default:
-                    mSupplierSpinner.setSelection(0);
-                    break;
-            }
-
-            // category is a dropdown spinner, so map the constant value from the database
-            // into one of the dropdown options
-            // Then call setSelection() so that option is displayed on screen as the current selection.
-/*            switch (category) {
-                case InventoryContract.ProductEntry.SWIM:
-                    mCategorySpinner.setSelection(1);
-                    break;
-                case InventoryContract.ProductEntry.BIKE:
-                    mCategorySpinner.setSelection(2);
-                    break;
-                case InventoryContract.ProductEntry.RUN:
-                    mCategorySpinner.setSelection(3);
-                    break;
-                default:
-                    mCategorySpinner.setSelection(0);
-                    break;
-            }*/
+            mSupplierName.setText(supplierName);
+            mSupplierPhone.setText(PhoneFormatter.formatPhone(supplierPhone));
+            mCurrencySymbol.setText(currencySymbol);
         }
     }
 
@@ -468,62 +468,60 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mDescriptionEditText.setText("");
         mPrice.setText("");
         mQuantity.setText("");
-        mSupplierSpinner.setSelection(0);
-        //mCategorySpinner.setSelection(0);
+        mSupplierName.setText("");
+        mSupplierPhone.setText("");
     }
 
-    /**
-     * Show a dialog that warns the user there are unsaved changes that will be lost
-     * if they continue leaving the editor.
-     *
-     * @param discardButtonClickListener is the click listener for what to do when
-     *                                   the user confirms they want to discard their changes
-     */
-    private void showUnsavedChangesDialog(
-            DialogInterface.OnClickListener discardButtonClickListener) {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
+
+     //Show a dialog that warns the user there are unsaved changes that will be lost
+     //if they continue leaving the editor.
+    private void unsavedChangesDialog(){
+        // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.unsaved_changes_dialog_msg);
-        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the product.
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
+
+        //2. add buttons
+        builder.setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked discard button
+                NavUtils.navigateUpFromSameTask(EditorActivity.this);
             }
         });
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked keep editing
+            }
+        });
+        // 3. set message and title
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
 
-        // Create and show the AlertDialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        // 4. Get the AlertDialog from create()
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
      * Prompt the user to confirm that they want to delete this product.
      */
-    private void showDeleteConfirmationDialog() {
+    private void deleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int which) {
                 // User clicked the "Delete" button, so delete the Product.
+
                 deleteProduct();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int which) {
                 // User clicked the "Cancel" button, so dismiss the dialog
                 // and continue editing the product.
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
+                dialog.dismiss();
             }
         });
+
+        builder.setMessage(R.string.delete_dialog_msg);
 
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
@@ -556,4 +554,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Close the activity
         finish();
     }
+
+    //checks that field is not empty
+    private void validateField(String input, EditText view){
+        if(input.isEmpty() || input.equals("")) {
+            view.setHintTextColor(getResources().getColor(R.color.red));
+            errorNum = errorNum + 1;
+        }
+    }
+
 }

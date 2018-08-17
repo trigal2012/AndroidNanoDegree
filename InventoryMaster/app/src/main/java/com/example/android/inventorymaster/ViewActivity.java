@@ -1,9 +1,11 @@
 package com.example.android.inventorymaster;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -11,20 +13,18 @@ import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.example.android.inventorymaster.database.InventoryContract;
-import com.example.android.inventorymaster.database.InventoryDbHelper;
 
 
 public class ViewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -35,13 +35,17 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
     /** Adapter for the ListView */
     private InventoryCursorAdapter mCursorAdapter;
 
+    /** Vars for fab button */
+    FloatingActionButton fab;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
 
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,116 +56,68 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //find the listView and populate it with Products
         ListView productListView = findViewById(R.id.list);
+
+        //show no products label until products are added to the db
+        View emptyView = findViewById(R.id.empty_view);
+        productListView.setEmptyView(emptyView);
+
         mCursorAdapter = new InventoryCursorAdapter(this, null);
         productListView.setAdapter(mCursorAdapter);
 
-
         //setup the click listener for each row
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+                @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(ViewActivity.this, EditorActivity.class);
+                    Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                    animation1.setDuration(1000);
+                    view.startAnimation(animation1);
+                    Intent intent = new Intent(ViewActivity.this, EditorActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
-                Log.i("Main view", "content uri: " + currentProductUri);
                 intent.setData(currentProductUri);
                 startActivity(intent);
             }
         });
+
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
 
-    public void plus_button(View view){
-        Log.i("plus button", "a thing: " + view.getTag());
-    }
 
+    public void buttonClicked_plus(View view) {
+        int id = Integer.parseInt(view.getTag().toString());
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView child = row.findViewById(R.id.quantity);
+        int quantity = Integer.parseInt(child.getText().toString());
 
-    private void insertProduct() {
-        //add some mock data here with using models
-        // Create a ContentValues object where column names are the keys, append the column values
-        //TODO: add data validation here before parsing and sending to uri
-        ContentValues values = new ContentValues();
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME, "Sample Product");
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION, "some stuff about the product will go here");
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE, 599);
-        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 100);
-        values.put(InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID, 0);
-        values.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, 0);
-
-        //call the uri and send the data
-        Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
-    }
-
-    private void deleteData() {
-        int rowsDeleted = getContentResolver().delete(InventoryContract.ProductEntry.CONTENT_URI, null, null);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_view.xml file.
-        // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
-        switch (item.getItemId()) {
-            // Respond to a click on the "Insert dummy data" menu option
-            case R.id.insert_category_data:
-                //call the insert mock data method to add many categories to the DB
-                insertCategory();
-                //once new data is added, refresh the display
-                return true;
-
-            case R.id.insert_supplier_data:
-                //call the insert mock data method to add supplier data to the DB
-                insertSupplier();
-                //once new data is added, refresh the display
-                return true;
-
-            case R.id.insert_product_data:
-                //call the insert mock data method to add products to the DB
-                insertProduct();
-                return true;
-
-            case R.id.delete_all:
-                //call the insert mock data method to add many products and categories to the DB
-                deleteData();
-                return true;
+        //do the math to increase the quantity value, only allow 999999 as the max
+        if(quantity <= 999998){
+            quantity = quantity + 1;
         }
-        return super.onOptionsItemSelected(item);
-    }
 
-
-
-    private void insertCategory(){
-        //add some mock data here with using models
-        // Create a ContentValues object where column names are the keys, append the column values
-        //TODO: add data validation here before parsing to send to uri
+        //update the db with the new quantity value
+        //form the uri for this product row
+        Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
         ContentValues values = new ContentValues();
-        values.put(InventoryContract.CategoryEntry.COLUMN_CATEGORY_NAME, "Sample category");
-
-        //call the uri and send the data
-        Uri newUri = getContentResolver().insert(InventoryContract.CategoryEntry.CONTENT_URI, values);
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+        getContentResolver().update(currentProductUri, values, null, null);
     }
 
-    private void insertSupplier(){
-        //add some mock data here with using models
-        // Create a ContentValues object where column names are the keys, append the column values
-        //TODO: add data validation here before parsing to send to uri
+    public void buttonClicked_minus(View view) {
+        int id = Integer.parseInt(view.getTag().toString());
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView child = row.findViewById(R.id.quantity);
+        int quantity = Integer.parseInt(child.getText().toString());
+
+        //do the math to reduce the quantity value
+        if(quantity > 0)
+        quantity = quantity - 1;
+
+        //update the db with the new quantity value
+        //form the uri for this product row
+        Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
         ContentValues values = new ContentValues();
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_NAME, "Sample Supplier");
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_EMAIL, "suppliercontact@fakeEmail.com");
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_PHONE, "555-555-1212");
-        values.put(InventoryContract.SupplierEntry.COLUMN_SUPPLIER_WEB, "www.supplier.com");
-        values.put(InventoryContract.SupplierEntry.COLUMN_CATEGORY_ID, 0);
-
-        //call the uri and send the data
-        Uri newUri = getContentResolver().insert(InventoryContract.SupplierEntry.CONTENT_URI, values);
+        values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+        getContentResolver().update(currentProductUri, values, null, null);
     }
-
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -172,8 +128,8 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
                 InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE,
                 InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
                 InventoryContract.ProductEntry.COLUMN_PRODUCT_DESCRIPTION,
-                InventoryContract.ProductEntry.COLUMN_CATEGORY_ID,
-                InventoryContract.ProductEntry.COLUMN_SUPPLIER_ID};
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME,
+                InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context

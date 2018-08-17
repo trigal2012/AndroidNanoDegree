@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Objects;
@@ -22,19 +21,11 @@ public class InventoryProvider extends ContentProvider {
 
     //Tags for logging
     private static final String PRODUCTS_LOG_TAG = com.example.android.inventorymaster.database.InventoryContract.ProductEntry.class.getSimpleName();
-    private static final String CATEGORIES_LOG_TAG = com.example.android.inventorymaster.database.InventoryContract.CategoryEntry.class.getSimpleName();
-    private static final String SUPPLIERS_LOG_TAG = com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.class.getSimpleName();
 
 
     //setup the URI matcher codes for each table
     private static final int PRODUCTS = 100;
     private static final int PRODUCT_ID = 101;
-
-    private static final int CATEGORIES = 200;
-    private static final int CATEGORY_ID = 201;
-
-    private static final int SUPPLIERS = 300;
-    private static final int SUPPLIER_ID = 301;
 
     //UriMatcher object to match a content URI to a corresponding code
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -47,10 +38,6 @@ public class InventoryProvider extends ContentProvider {
     static{
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_PRODUCTS, PRODUCTS);
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_PRODUCTS + "/#", PRODUCT_ID);
-        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_CATEGORIES, CATEGORIES);
-        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_CATEGORIES + "/#", CATEGORY_ID);
-        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_SUPPLIERS, SUPPLIERS);
-        sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_SUPPLIERS + "/#", SUPPLIER_ID);
     }
 
     //getType runs a switch statement to check the incoming calls to a URI to see if they
@@ -58,21 +45,13 @@ public class InventoryProvider extends ContentProvider {
     //it's not likely that this app will cause an exception however calls from outside this app could trigger an exception
     //if the correct URI path is not called
     @Override
-    public String getType(@NonNull Uri uri) {
+    public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
                 return InventoryContract.ProductEntry.CONTENT_LIST_TYPE;
             case PRODUCT_ID:
                 return InventoryContract.ProductEntry.CONTENT_ITEM_TYPE;
-            case CATEGORIES:
-                return InventoryContract.CategoryEntry.CONTENT_LIST_TYPE;
-            case CATEGORY_ID:
-                return InventoryContract.CategoryEntry.CONTENT_ITEM_TYPE;
-            case SUPPLIERS:
-                return InventoryContract.SupplierEntry.CONTENT_LIST_TYPE;
-            case SUPPLIER_ID:
-                return InventoryContract.SupplierEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
@@ -98,7 +77,7 @@ public class InventoryProvider extends ContentProvider {
 
     //***** READ method ****
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
         // Get readable database
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
@@ -121,30 +100,6 @@ public class InventoryProvider extends ContentProvider {
                 cursor = database.query(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
-            //queries the categories table to return results for one or more items
-            case CATEGORIES:
-                cursor = database.query(com.example.android.inventorymaster.database.InventoryContract.CategoryEntry.TABLE_NAME, projection, selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
-            //queries the table for a single row
-            case CATEGORY_ID:
-                selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                cursor = database.query(com.example.android.inventorymaster.database.InventoryContract.CategoryEntry.TABLE_NAME, projection, selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
-            //queries the suppliers table to return results for one or more items
-            case SUPPLIERS:
-                cursor = database.query(com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.TABLE_NAME, projection, selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
-            //queries the table for a single row
-            case SUPPLIER_ID:
-                selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                cursor = database.query(com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.TABLE_NAME, projection, selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
@@ -158,17 +113,13 @@ public class InventoryProvider extends ContentProvider {
         return cursor;
     }
 
-    //***** CREATE methods ****
+    //***** CREATE method ****
     @Override
-    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
+    public Uri insert(Uri uri, ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
                 return insertProduct(uri, contentValues);
-            case CATEGORIES:
-                return insertCategory(uri, contentValues);
-            case SUPPLIERS:
-                return insertSupplier(uri, contentValues);
             default:
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
         }
@@ -194,49 +145,9 @@ public class InventoryProvider extends ContentProvider {
         return ContentUris.withAppendedId(uri, id);
     }
 
-    private Uri insertCategory(Uri uri, ContentValues values){
-        //TODO: add the validation for the values before writing to the database
-        //add values to the db
-        //open a connection to the DB
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-        // Insert the new category with the given values
-        long id = database.insert(com.example.android.inventorymaster.database.InventoryContract.CategoryEntry.TABLE_NAME, null, values);
-        // If the ID is -1, then the insertion failed. Log an error and return null.
-        if (id == -1) {
-            Log.e(CATEGORIES_LOG_TAG, "Failed to insert row for " + uri);
-            return null;
-        }
-
-        // Notify all listeners that the data has changed for the product content URI
-        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
-
-        // Return the new URI with the ID (of the newly inserted row) appended at the end
-        return ContentUris.withAppendedId(uri, id);
-    }
-
-    private Uri insertSupplier(Uri uri, ContentValues values){
-        //TODO: add the validation for the values before writing to the database
-        //add values to the db
-        //open a connection to the DB
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-        // Insert the new category with the given values
-        long id = database.insert(com.example.android.inventorymaster.database.InventoryContract.SupplierEntry.TABLE_NAME, null, values);
-        // If the ID is -1, then the insertion failed. Log an error and return null.
-        if (id == -1) {
-            Log.e(SUPPLIERS_LOG_TAG, "Failed to insert row for " + uri);
-            return null;
-        }
-
-        // Notify all listeners that the data has changed for the product content URI
-        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
-
-        // Return the new URI with the ID (of the newly inserted row) appended at the end
-        return ContentUris.withAppendedId(uri, id);
-    }
-
-    //***** UPDATE methods ****
+    //***** UPDATE method ****
     @Override
-    public int update(@NonNull Uri uri, ContentValues contentValues, String selection,
+    public int update(Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
@@ -246,18 +157,6 @@ public class InventoryProvider extends ContentProvider {
                 selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
                 return updateProduct(uri, contentValues, selection, selectionArgs);
-            case CATEGORIES:
-                //TODO: return updateCategory(uri, contentValues, selection, selectionArgs);
-            case CATEGORY_ID:
-                selection = com.example.android.inventorymaster.database.InventoryContract.CategoryEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                //TODO: return updateCategory(uri, contentValues, selection, selectionArgs);
-            case SUPPLIERS:
-                //TODO: return updateSupplier(uri, contentValues, selection, selectionArgs);
-            case SUPPLIER_ID:
-                selection = com.example.android.inventorymaster.database.InventoryContract.SupplierEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                //TODO: return updateSupplier(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
         }
@@ -298,7 +197,7 @@ public class InventoryProvider extends ContentProvider {
 
     //***** DELETE method ****
     @Override
-    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -312,26 +211,6 @@ public class InventoryProvider extends ContentProvider {
                 rowsDeleted = database.delete(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case PRODUCT_ID:
-                // Delete a single row given by the ID in the URI
-                selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                rowsDeleted = database.delete(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
-                break;
-            case CATEGORIES:
-                // Delete all rows that match the selection and selection args
-                rowsDeleted = database.delete(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
-                break;
-            case CATEGORY_ID:
-                // Delete a single row given by the ID in the URI
-                selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                rowsDeleted = database.delete(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
-                break;
-            case SUPPLIERS:
-                // Delete all rows that match the selection and selection args
-                rowsDeleted = database.delete(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
-                break;
-            case SUPPLIER_ID:
                 // Delete a single row given by the ID in the URI
                 selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
