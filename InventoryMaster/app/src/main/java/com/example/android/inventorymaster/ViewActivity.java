@@ -1,20 +1,17 @@
 package com.example.android.inventorymaster;
 
-import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -23,21 +20,23 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.example.android.inventorymaster.database.InventoryContract;
 
 
-public class ViewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ViewActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** Identifier for the product data loader */
+    /**
+     * Identifier for the product data loader
+     */
     private static final int PRODUCT_LOADER = 0;
-
-    /** Adapter for the ListView */
-    private InventoryCursorAdapter mCursorAdapter;
-
-    /** Vars for fab button */
+    /**
+     * Vars for fab button
+     */
     FloatingActionButton fab;
-
+    /**
+     * Adapter for the ListView
+     */
+    private InventoryCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +65,12 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //setup the click listener for each row
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
+            @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
-                    animation1.setDuration(1000);
-                    view.startAnimation(animation1);
-                    Intent intent = new Intent(ViewActivity.this, EditorActivity.class);
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(1000);
+                view.startAnimation(animation1);
+                Intent intent = new Intent(ViewActivity.this, EditorActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(InventoryContract.ProductEntry.CONTENT_URI, id);
                 intent.setData(currentProductUri);
                 startActivity(intent);
@@ -83,6 +82,8 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     public void buttonClicked_plus(View view) {
+        Log.i("view activity", "plus button clicked");
+
         int id = Integer.parseInt(view.getTag().toString());
         ViewGroup row = (ViewGroup) view.getParent();
         TextView child = row.findViewById(R.id.quantity);
@@ -90,7 +91,6 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //do the math to increase the quantity value, only allow 999999 as the max
         quantity = quantity + 1;
-
 
         //update the db with the new quantity value
         //form the uri for this product row
@@ -107,8 +107,8 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         int quantity = Integer.parseInt(child.getText().toString());
 
         //do the math to reduce the quantity value
-        if(quantity > 0)
-        quantity = quantity - 1;
+        if (quantity > 0)
+            quantity = quantity - 1;
 
         //update the db with the new quantity value
         //form the uri for this product row

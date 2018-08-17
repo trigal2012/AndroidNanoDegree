@@ -36,17 +36,16 @@ import java.util.Locale;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    //use for formatting quantity and currency values
-    static Locale locale = Locale.getDefault();
-    String currencySymbol = Currency.getInstance(locale).getSymbol();
-    NumberFormat nf = NumberFormat.getInstance(locale);
-
     //identifier for the loader
     private static final int EXISTING_PRODUCT_LOADER = 0;
-
+    //use for formatting quantity and currency values
+    static Locale locale = Locale.getDefault();
+    private static boolean mError = false;
+    String currencySymbol = Currency.getInstance(locale).getSymbol();
+    NumberFormat nf = NumberFormat.getInstance(locale);
+    int quantity;
     //content uri for existing product
     private Uri mCurrentProductUri;
-
     //vars for the edit fields;
     private EditText mNameEditText;
     private EditText mDescriptionEditText;
@@ -61,14 +60,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private ImageButton mPhoneBtn;
     private TextView mRequied;
     private int errorNum = 0;
-
-    int quantity;
-
     //boolean to track if product has been edited
     private boolean mProductHasChanged = false;
-
-    private static boolean mError = false;
-
     /**
      * OnTouchListener that listens for any user touches on a View, implying that they are modifying
      * the view, and we change the mProductHasChanged boolean to true.
@@ -93,6 +86,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
 
+    //used to format the supplier phone number
+    public static String formatPhone(String phone) {
+        String formattedNumber = null;
+        Log.i("format phone", "build version: " + Build.VERSION.SDK_INT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            formattedNumber = PhoneNumberUtils.formatNumber(phone, "US");
+            return formattedNumber;
+        } else {
+            formattedNumber = PhoneNumberUtils.formatNumber(phone);
+            return formattedNumber;
+        }
+    }
 
     //launch the editor activity
     @Override
@@ -151,8 +156,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 String tmpNumber = s.toString();
                 //if the user entered a decimal
                 // limit number of digits after it to 2 places
-                if(tmpNumber.contains(".") && tmpNumber.substring(tmpNumber.indexOf(".")+1).length()>2){
-                    mPrice.setText(tmpNumber.substring(0,tmpNumber.length()-1));
+                if (tmpNumber.contains(".") && tmpNumber.substring(tmpNumber.indexOf(".") + 1).length() > 2) {
+                    mPrice.setText(tmpNumber.substring(0, tmpNumber.length() - 1));
                     mPrice.setSelection(mPrice.getText().length());
                 }
             }
@@ -176,41 +181,44 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     s.clear();
                 }
                 //enable minus/plus buttons if quantity is not equal to 0 and is not null
-                if (!s.toString().equals("0") || !s.toString().equals("")){
+                if (!s.toString().equals("0") || !s.toString().equals("")) {
                     mPlusBtn.setEnabled(true);
                     mPlusBtn.setColorFilter(getResources().getColor(R.color.green));
                     mMinusBtn.setEnabled(true);
                     mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
                 }
-                //if there is no value for quantity, disable plus and minus buttons
-                if(s.toString().equals("") || s.toString().equals("0") ){
-                    mPlusBtn.setEnabled(false);
-                    mPlusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+                //if there is no value for quantity or it is 0, disable minus buttons
+                if (s.toString().equals("") || s.toString().equals("0")) {
                     mMinusBtn.setEnabled(false);
                     mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+                }
+                //if there is no value for quantity, disable the plus button
+                if (s.toString().equals("")) {
+                    mPlusBtn.setEnabled(false);
+                    mPlusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
                 }
             }
         });
 
         //phone number formatting
-        mSupplierPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+        mSupplierPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+            }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                }
+            }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        PhoneNumberUtils.formatNumber(s.toString(), "US");
-                    } else {
-                        PhoneNumberUtils.formatNumber(s.toString());
-                    }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    PhoneNumberUtils.formatNumber(s.toString(), "US");
+                } else {
+                    PhoneNumberUtils.formatNumber(s.toString());
                 }
+            }
         });
 
         //set onClicklistener for phone icon
@@ -256,7 +264,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // (It doesn't make sense to delete a product that hasn't been created yet.)
             invalidateOptionsMenu();
 
-            //set minus/plu button to gray and disable since there is not data yet for the quantity
+            //set delete button to disable since this is not yet saved to db
+            mDelete.setEnabled(false);
+            mDelete.setColorFilter(getResources().getColor(R.color.disable_gray));
+
+            //set phone button to disable
+            mPhoneBtn.setEnabled(false);
+            mPhoneBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+
+            //set minus/plus button to gray and disable since there is not data yet for the quantity
             mPlusBtn.setEnabled(false);
             mPlusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
             mMinusBtn.setEnabled(false);
@@ -270,9 +286,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // and display the current values in the editor
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
         }
-
-
-
     }
 
     //the supplier phone number is filled in based on values from the DB
@@ -288,9 +301,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public void buttonClicked_quantity(View view) {
         //do the math to increase the quantity value, only allow 999999 as the max
         quantity = Integer.parseInt(mQuantity.getText().toString());
-        if(view.getId() == mPlusBtn.getId()) {
-                quantity = quantity + 1;
-        }else if(view.getId() == mMinusBtn.getId()){
+        if (view.getId() == mPlusBtn.getId()) {
+            quantity = quantity + 1;
+        } else if (view.getId() == mMinusBtn.getId()) {
             if (quantity > 0)
                 quantity = quantity - 1;
         }
@@ -325,9 +338,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         validateField(supplierName, mSupplierName);
         validateField(supplierPhone, mSupplierPhone);
 
-        if(errorNum > 0){
+        if (errorNum > 0) {
             mRequied.setTextColor(getResources().getColor(R.color.red));
-        }else {
+        } else {
             mRequied.setTextColor(getResources().getColor(R.color.secondaryTextColor));
 
 
@@ -342,8 +355,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             values.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, supplierPhone);
 
 
-            // Determine if this is a new or existing product by checking if product uri is null or not
-            if (mCurrentProductUri == null) {
+            if (!mProductHasChanged) {
+                //no values have been changed so don't make the insert or update call
+                Toast.makeText(this, getString(R.string.nothing_changed),
+                        Toast.LENGTH_SHORT).show();
+                // Determine if this is a new or existing product by checking if product uri is null or not
+            } else if (mCurrentProductUri == null) {
                 // This is a NEW product, so insert a new product into the provider,
                 // returning the content URI for the new product.
 
@@ -369,7 +386,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // we want to modify.
 
                 int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
-
 
                 // Show a toast message depending on whether or not the update was successful.
                 if (rowsAffected == 0) {
@@ -417,7 +433,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Save product to database
                 saveProduct();
                 // Exit activity if there are no input errors
-                if(errorNum == 0 ) {
+                if (errorNum == 0) {
                     finish();
                 }
                 errorNum = 0;
@@ -507,11 +523,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             //configure price text
             //make sure priceString has 2 decimals
-            if(price.contains(".")&& price.substring(price.indexOf(".")+1).length()==1){
+            if (price.contains(".") && price.substring(price.indexOf(".") + 1).length() == 1) {
                 //only 1 number after the decimal, so add a 0
                 price = price + "0";
             }
-            if(!price.contains(".")){
+            if (!price.contains(".")) {
                 //there are no decimals in this number, so add one decimal and two 0's
                 price = price + ".00";
             }
@@ -526,16 +542,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mCurrencySymbol.setText(currencySymbol);
 
             //disable minus button if quantity is 0
-            if(quantity == 0){
+            if (quantity == 0) {
                 mMinusBtn.setEnabled(false);
                 mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
 
-            }else{
+            } else {
                 mPlusBtn.setEnabled(true);
                 mPlusBtn.setColorFilter(getResources().getColor(R.color.green));
                 mMinusBtn.setEnabled(true);
                 mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
             }
+
+            //enable delete button
+            mDelete.setEnabled(true);
+            mDelete.setColorFilter(getResources().getColor(R.color.red));
+
+            //enable phone button
+            mPhoneBtn.setEnabled(true);
+            mPhoneBtn.setColorFilter(getResources().getColor(R.color.blue));
+
         }
     }
 
@@ -550,10 +575,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierPhone.setText("");
     }
 
-
-     //Show a dialog that warns the user there are unsaved changes that will be lost
-     //if they continue leaving the editor.
-    private void unsavedChangesDialog(){
+    //Show a dialog that warns the user there are unsaved changes that will be lost
+    //if they continue leaving the editor.
+    private void unsavedChangesDialog() {
         // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -634,23 +658,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     //checks that field is not empty
-    private void validateField(String input, EditText view){
-        if(input.isEmpty() || input.equals("")) {
+    private void validateField(String input, EditText view) {
+        if (input.isEmpty() || input.equals("")) {
             view.setHintTextColor(getResources().getColor(R.color.red));
             errorNum = errorNum + 1;
-        }
-    }
-
-    //used to format the supplier phone number
-    public static String formatPhone(String phone) {
-        String formattedNumber = null;
-        Log.i("format phone", "build version: " + Build.VERSION.SDK_INT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            formattedNumber = PhoneNumberUtils.formatNumber(phone, "US");
-            return formattedNumber;
-        } else {
-            formattedNumber = PhoneNumberUtils.formatNumber(phone);
-            return formattedNumber;
         }
     }
 

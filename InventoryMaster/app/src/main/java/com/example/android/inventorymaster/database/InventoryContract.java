@@ -8,21 +8,19 @@ import android.provider.BaseColumns;
 
 public final class InventoryContract {
 
-    // To prevent someone from accidentally instantiating the contract class,
-    // give it an empty constructor.
-    private InventoryContract() {
-    }
-
     //constant to hold the content authority, used with the URI, usually set this to the package name of the app
     public static final String CONTENT_AUTHORITY = "com.example.android.inventorymaster";
-
+    //path to append to the URI
+    //one for each table
+    public static final String PATH_PRODUCTS = "products";
     //Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
     //the content provider.
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    //path to append to the URI
-    //one for each table
-    public static final String PATH_PRODUCTS = "products";
+    // To prevent someone from accidentally instantiating the contract class,
+    // give it an empty constructor.
+    private InventoryContract() {
+    }
 
     //each table should be defined here. for each table, specify the table name as well as the data that is to be stored
     //each piece of data should have it's own column.

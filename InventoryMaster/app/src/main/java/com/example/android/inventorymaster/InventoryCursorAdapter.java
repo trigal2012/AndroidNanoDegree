@@ -2,6 +2,7 @@ package com.example.android.inventorymaster;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
 
-class InventoryCursorAdapter extends CursorAdapter{
+class InventoryCursorAdapter extends CursorAdapter {
 
     //use for formatting quantiy and currency values
     Locale locale = Locale.getDefault();
@@ -73,11 +74,11 @@ class InventoryCursorAdapter extends CursorAdapter{
         quantityTextView.setText(productQuantity);
 
         //make sure priceString has 2 decimals
-        if(productPrice.contains(".")&& productPrice.substring(productPrice.indexOf(".")+1).length()==1){
+        if (productPrice.contains(".") && productPrice.substring(productPrice.indexOf(".") + 1).length() == 1) {
             //only 1 number after the decimal, so add a 0
             productPrice = productPrice + "0";
         }
-        if(!productPrice.contains(".")){
+        if (!productPrice.contains(".")) {
             //there are no decimals in this number, so add one decimal and two 0's
             productPrice = productPrice + ".00";
         }
@@ -90,14 +91,14 @@ class InventoryCursorAdapter extends CursorAdapter{
         plusBtn.setTag(productDbId);
         minusBtn.setTag(productDbId);
 
-            plusBtn.setEnabled(true);
-            plusBtn.setColorFilter(context.getResources().getColor(R.color.green));
+        plusBtn.setEnabled(true);
+        plusBtn.setColorFilter(context.getResources().getColor(R.color.green));
 
 
-        if(productQuantity.equals("0") || productQuantity.isEmpty() || productQuantity.equals("")) {
+        if (productQuantity.equals("0") || productQuantity.isEmpty() || productQuantity.equals("")) {
             minusBtn.setEnabled(false);
             minusBtn.setColorFilter(context.getResources().getColor(R.color.disable_gray));
-        }else{
+        } else {
             minusBtn.setEnabled(true);
             minusBtn.setColorFilter(context.getResources().getColor(R.color.red));
         }
@@ -106,8 +107,9 @@ class InventoryCursorAdapter extends CursorAdapter{
         plusBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(context instanceof ViewActivity){
-                    ((ViewActivity)context).buttonClicked_plus(view);
+                if (context instanceof ViewActivity) {
+                    Log.i("cursor adapter", "plus button clicked");
+                    ((ViewActivity) context).buttonClicked_plus(view);
                 }
             }
         });
@@ -115,8 +117,8 @@ class InventoryCursorAdapter extends CursorAdapter{
         minusBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(context instanceof ViewActivity){
-                    ((ViewActivity)context).buttonClicked_minus(view);
+                if (context instanceof ViewActivity) {
+                    ((ViewActivity) context).buttonClicked_minus(view);
                 }
             }
         });

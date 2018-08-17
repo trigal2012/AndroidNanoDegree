@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Objects;
@@ -35,10 +36,15 @@ public class InventoryProvider extends ContentProvider {
     //then, when uris are called, rather then looking at the full path for a match
     //the content provider will match the int values
     //add a uri matcher for each code above
-    static{
+    static {
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_PRODUCTS, PRODUCTS);
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_PRODUCTS + "/#", PRODUCT_ID);
     }
+
+    /**
+     * Database helper object
+     */
+    private InventoryDbHelper mDbHelper;
 
     //getType runs a switch statement to check the incoming calls to a URI to see if they
     //match the above values, if do, the calls goes through, if not, an exception is thrown
@@ -56,9 +62,6 @@ public class InventoryProvider extends ContentProvider {
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
     }
-
-    /** Database helper object */
-    private InventoryDbHelper mDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -96,7 +99,7 @@ public class InventoryProvider extends ContentProvider {
             //queries the table for a single row
             case PRODUCT_ID:
                 selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
@@ -125,8 +128,16 @@ public class InventoryProvider extends ContentProvider {
         }
     }
 
-    private Uri insertProduct(Uri uri, ContentValues values){
-        //TODO: add the validation for the values before writing to the database
+    private Uri insertProduct(Uri uri, ContentValues values) {
+        //make sure values have data before making the insert called
+        if (values.size() == 0) {
+            Log.i(PRODUCTS_LOG_TAG, "No product values present. Nothing added to database. " + uri);
+            return null;
+        }
+        if (valuesCheck(values) > 0) {
+            Log.i(PRODUCTS_LOG_TAG, "Data not valid. Nothing added to database. " + uri);
+            return null;
+        }
         //add values to the db
         //open a connection to the DB
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -149,13 +160,14 @@ public class InventoryProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {
+
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
                 return updateProduct(uri, contentValues, selection, selectionArgs);
             case PRODUCT_ID:
                 selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateProduct(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
@@ -167,16 +179,14 @@ public class InventoryProvider extends ContentProvider {
         // If the {@link ProductEntry#COLUMN_Product_NAME} key is present,
         // check that the name value is not null.
 
-        if (values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME)) {
-            String name = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
-            if (name == null || name.equals("")) {
-                return 0;
-            }
-        }
-
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
             return 0;
+        }
+        if (values.size() != 0) {
+            if (valuesCheck(values) > 0 && checkQuantity(values) > 0) {
+                return 0;
+            }
         }
 
         // Otherwise, get writable database to update the data
@@ -214,7 +224,7 @@ public class InventoryProvider extends ContentProvider {
             case PRODUCT_ID:
                 // Delete a single row given by the ID in the URI
                 selection = com.example.android.inventorymaster.database.InventoryContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(com.example.android.inventorymaster.database.InventoryContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
@@ -229,5 +239,36 @@ public class InventoryProvider extends ContentProvider {
 
         // Return the number of rows deleted
         return rowsDeleted;
+    }
+
+    //checking the values
+    private int valuesCheck(ContentValues values) {
+        int valueCheck = 0;
+        String productName = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
+        String productQuantity = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        String productPrice = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_PRICE);
+        String productSupplierName = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
+        String productSupplierPhone = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
+
+        //make sure each specific field exists and is not empty
+        if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplierName) ||
+                TextUtils.isEmpty(productSupplierPhone) || TextUtils.isEmpty(productPrice) || TextUtils.isEmpty(productQuantity)) {
+            valueCheck = 1;
+        }
+        return valueCheck;
+    }
+
+    private int checkQuantity(ContentValues values) {
+        Log.i("quantity checker", "beore if");
+        int quantityCheck = 1;
+        String productQuantity = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        if (!TextUtils.isEmpty(productQuantity)) {
+            Log.i("quantity checker", "if");
+
+            quantityCheck = 0;
+        }
+        Log.i("quantity checker", "quantity checker: " + quantityCheck);
+
+        return quantityCheck;
     }
 }
