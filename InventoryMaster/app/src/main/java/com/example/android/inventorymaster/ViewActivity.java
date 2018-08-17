@@ -89,9 +89,8 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
         int quantity = Integer.parseInt(child.getText().toString());
 
         //do the math to increase the quantity value, only allow 999999 as the max
-        if(quantity <= 999998){
-            quantity = quantity + 1;
-        }
+        quantity = quantity + 1;
+
 
         //update the db with the new quantity value
         //form the uri for this product row

@@ -166,6 +166,7 @@ public class InventoryProvider extends ContentProvider {
     private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         // If the {@link ProductEntry#COLUMN_Product_NAME} key is present,
         // check that the name value is not null.
+
         if (values.containsKey(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME)) {
             String name = values.getAsString(InventoryContract.ProductEntry.COLUMN_PRODUCT_NAME);
             if (name == null || name.equals("")) {

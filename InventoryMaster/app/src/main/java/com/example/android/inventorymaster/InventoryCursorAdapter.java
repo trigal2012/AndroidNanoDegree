@@ -53,7 +53,7 @@ class InventoryCursorAdapter extends CursorAdapter{
         TextView priceTextView = view.findViewById(R.id.price);
         TextView quantityTextView = view.findViewById(R.id.quantity);
         final ImageButton plusBtn = view.findViewById(R.id.plus_button);
-        ImageButton minusBtn = view.findViewById(R.id.minus_button);
+        final ImageButton minusBtn = view.findViewById(R.id.minus_button);
 
 
         // Find the columns of product attributes that we're interested in
@@ -65,24 +65,34 @@ class InventoryCursorAdapter extends CursorAdapter{
         // Read the product attributes from the Cursor for the current product
         int productDbId = cursor.getInt(idColumnIndex);
         String productName = cursor.getString(nameColumnIndex);
-        String productPrice = currencySymbol + cursor.getString(priceColumnIndex);
+        String productPrice = cursor.getString(priceColumnIndex);
         String productQuantity = cursor.getString(quantityColumnIndex);
 
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
-        priceTextView.setText(productPrice);
         quantityTextView.setText(productQuantity);
+
+        //make sure priceString has 2 decimals
+        if(productPrice.contains(".")&& productPrice.substring(productPrice.indexOf(".")+1).length()==1){
+            //only 1 number after the decimal, so add a 0
+            productPrice = productPrice + "0";
+        }
+        if(!productPrice.contains(".")){
+            //there are no decimals in this number, so add one decimal and two 0's
+            productPrice = productPrice + ".00";
+        }
+
+        //add currency symbol
+        productPrice = currencySymbol + productPrice;
+        priceTextView.setText(productPrice);
 
         //setup tag for plus and minus buttons
         plusBtn.setTag(productDbId);
         minusBtn.setTag(productDbId);
-        if(productQuantity.equals("999999")){
-            plusBtn.setEnabled(false);
-            plusBtn.setColorFilter(context.getResources().getColor(R.color.disable_gray));
-        }else{
+
             plusBtn.setEnabled(true);
             plusBtn.setColorFilter(context.getResources().getColor(R.color.green));
-        }
+
 
         if(productQuantity.equals("0") || productQuantity.isEmpty() || productQuantity.equals("")) {
             minusBtn.setEnabled(false);

@@ -15,8 +15,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventorymaster.database.InventoryContract;
-import com.example.android.inventorymaster.utility.NumberInputFilter;
 import com.example.android.inventorymaster.utility.PhoneFormatter;
 
 import java.text.NumberFormat;
@@ -39,8 +36,8 @@ import java.util.Locale;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    //use for formatting quantiy and currency values
-    Locale locale = Locale.getDefault();
+    //use for formatting quantity and currency values
+    static Locale locale = Locale.getDefault();
     String currencySymbol = Currency.getInstance(locale).getSymbol();
     NumberFormat nf = NumberFormat.getInstance(locale);
 
@@ -58,7 +55,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private TextView mCurrencySymbol;
     private EditText mSupplierName;
     private EditText mSupplierPhone;
-    private ImageButton mSave;
     private ImageButton mDelete;
     private ImageButton mPlusBtn;
     private ImageButton mMinusBtn;
@@ -159,7 +155,30 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierPhone.setOnTouchListener(mTouchListener);
 
         //to make sure the price field is formatted to 2 decimals
-        mPrice.setFilters(new InputFilter[]{new NumberInputFilter(2)});
+        //using this help: https://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext/16684661
+        //https://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext/16684661
+        mPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String tmpNumber = s.toString();
+                //if the user entered a decimal
+                // limit number of digits after it to 2 places
+                if(tmpNumber.contains(".") && tmpNumber.substring(tmpNumber.indexOf(".")+1).length()>2){
+                    mPrice.setText(tmpNumber.substring(0,tmpNumber.length()-1));
+                    mPrice.setSelection(mPrice.getText().length());
+                }
+            }
+        });
 
         //no leading zeros for quantity
         mQuantity.addTextChangedListener(new TextWatcher() {
@@ -264,8 +283,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String supplierName = mSupplierName.getText().toString().trim();
         String supplierPhone = mSupplierPhone.getText().toString().trim();
 
-        Log.i("save", quantityString);
-
         //make sure fields are not null or empty string, if so, post error to user
         validateField(nameString, mNameEditText);
         validateField(priceString, mPrice);
@@ -275,11 +292,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if(errorNum > 0){
             mRequied.setTextColor(getResources().getColor(R.color.red));
-        }else{
+        }else {
             mRequied.setTextColor(getResources().getColor(R.color.secondaryTextColor));
-        }
 
-        if(errorNum == 0){
 
             // Create a ContentValues object where column names are the keys,
             // and product attributes from the editor are the values.
@@ -296,7 +311,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if (mCurrentProductUri == null) {
                 // This is a NEW product, so insert a new product into the provider,
                 // returning the content URI for the new product.
+
+
                 Uri newUri = getContentResolver().insert(InventoryContract.ProductEntry.CONTENT_URI, values);
+
 
                 // Show a toast message depending on whether or not the insertion was successful.
                 if (newUri == null) {
@@ -309,11 +327,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                             Toast.LENGTH_SHORT).show();
                 }
             } else {
+
                 // Otherwise this is an EXISTING product, so update the product with content URI: product uri
                 // and pass in the new ContentValues. Pass in null for the selection and selection args
                 // because mCurrentProductUri will already identify the correct row in the database that
                 // we want to modify.
+
                 int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
+
 
                 // Show a toast message depending on whether or not the update was successful.
                 if (rowsAffected == 0) {
@@ -361,7 +382,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Save product to database
                 saveProduct();
                 // Exit activity if there are no input errors
-                if(!mError) {
+                if(errorNum == 0 ) {
                     finish();
                 }
                 errorNum = 0;
@@ -449,6 +470,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String supplierName = cursor.getString(supplierNameColumnIndex);
             String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
 
+            //configure price text
+            //make sure priceString has 2 decimals
+            if(price.contains(".")&& price.substring(price.indexOf(".")+1).length()==1){
+                //only 1 number after the decimal, so add a 0
+                price = price + "0";
+            }
+            if(!price.contains(".")){
+                //there are no decimals in this number, so add one decimal and two 0's
+                price = price + ".00";
+            }
+
+            //configure phone text
+            supplierPhone = formatPhone(supplierPhone);
+            Log.i("setting supplier phoe", "" + supplierPhone);
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
@@ -456,8 +491,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mPrice.setText(price);
             mQuantity.setText(Integer.toString(quantity));
             mSupplierName.setText(supplierName);
-            mSupplierPhone.setText(PhoneFormatter.formatPhone(supplierPhone));
+            mSupplierPhone.setText(supplierPhone);
             mCurrencySymbol.setText(currencySymbol);
+
+            //disable minus button if quantity is 0
+            if(quantity == 0){
+                mMinusBtn.setEnabled(false);
+                mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+
+            }
         }
     }
 
@@ -560,6 +602,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if(input.isEmpty() || input.equals("")) {
             view.setHintTextColor(getResources().getColor(R.color.red));
             errorNum = errorNum + 1;
+        }
+    }
+
+    //used to format the supplier phone number
+    public static String formatPhone(String phone) {
+        String formattedNumber = null;
+        Log.i("format phone", "build version: " + Build.VERSION.SDK_INT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            formattedNumber = PhoneNumberUtils.formatNumber(phone, "US");
+            return formattedNumber;
+        } else {
+            formattedNumber = PhoneNumberUtils.formatNumber(phone);
+            return formattedNumber;
         }
     }
 
