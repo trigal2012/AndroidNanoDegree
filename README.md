@@ -10,7 +10,33 @@ There are nine projects in the Android Basics Nanodegree course. Each build on e
 #### [Project 6](https://github.com/trigal2012/AndroidNanoDegree/blob/master/README.md#project-6-newsapp) - News App (part 1 - Connecting to an API, Parsing the JSON response, Handling error cases gracefully, Updating information regularly, Handling Async and background tasks, Doing network operations independent of the Activity lifecycle) - Complete
 #### [Project 7](https://github.com/trigal2012/AndroidNanoDegree#project-7-newsapp-with-settings) - New App part 2 - adding in user permissions to control the data requested for the news feed - Complete
 #### [Project 8](https://github.com/trigal2012/AndroidNanoDegree#project-8-inventory-app---DB-setup-only) - Inventory app 1 - integrating a sqlite3 database with an app - Complete
-#### Project 9 - Inventory app 2
+#### [Project 9](https://github.com/trigal2012/AndroidNanoDegree#project-9-inventory-app---UI) - Inventory app 2 - adding UI to the db created in Project 8, direct edit of list row item from the listview, details view with editing, Dialog pop-up for Delete Confirmation and leaving edit screen early, UI validation, API validation, DB security controls
+
+## Project 9: Inventory App - UI
+key learnings:
+* adding Textwatchers to control how users can enter values into a data field
+  * quanity nor price can start with 0
+  * price can have only 2 digits after the decimal
+* using tags in List adaptor item rows to track the DB row index for each item
+* Cursors and Load Managers to get data for the views
+* Content Providers - replace POJO for the DB with Content Provider to basically build an API Layer into the SQL database
+* UI and workflow features to include:
+  * message to indicate an empty database
+  * Toast Measages to Warn user that data is not valid, Product was saved, Product was not saved
+  * Dialogs for Delete Confimration and Edit Cancellation
+  * buttons to increase/decrease quantity for the list row with validation to guard against negative value
+  * Abilty to Edit Product details
+  * Ability to Delete the Product
+  * Ability to call the supplier based on the number provided
+  
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Home_no_items.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Add_new_item.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Product_added.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Product_added_subtract_disabled.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Edit_Product.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Save_Error.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Delete_confirmation_dialog.png" width="200" height="350"></kbd>
+<kbd><img src="https://github.com/trigal2012/AndroidNanoDegree/blob/master/app_images/Inventory1/Quit_Edit_dialog.png" width="200" height="350"></kbd>
 
 ## Project 8: Inventory App - DB setup only
 Key Learnings:
@@ -23,7 +49,7 @@ Key Learnings:
     * the screen refreshes to show new data once it is inserted into the DB
   * the ability to delete all data in all tables
   * the ability to display the contents of the three tables
-
+  
 ### Comment from the reviewer
 <dl><dt>This project has a great user interface beyond of this project rubrics. Good job 👍 </dt></dl>
 
