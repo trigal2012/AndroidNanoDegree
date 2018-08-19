@@ -81,7 +81,6 @@ public class ViewActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     public void buttonClicked_plus(View view) {
-        Log.i("view activity", "plus button clicked");
 
         int id = Integer.parseInt(view.getTag().toString());
         ViewGroup row = (ViewGroup) view.getParent();

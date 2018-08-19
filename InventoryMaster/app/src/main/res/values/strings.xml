@@ -67,6 +67,7 @@
     <string name="all_products">ALL PRODUCTS</string>
     <string name="no_products">No Products in the database. Click the Plus (+) button to add some.</string>
     <string name="nothing_changed">No data was added or removed so nothing was saved.</string>
+    <string name="required_missing">Required fields are empty.</string>
 
 
 </resources>

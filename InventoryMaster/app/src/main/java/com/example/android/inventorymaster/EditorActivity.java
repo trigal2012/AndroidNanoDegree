@@ -162,6 +162,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 //quantity can't start with 0
                 if (s.toString().length() > 1 && s.toString().startsWith("0")) {
                     s.clear();
@@ -177,12 +178,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (s.toString().equals("") || s.toString().equals("0")) {
                     mMinusBtn.setEnabled(false);
                     mMinusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
+
                 }
                 //if there is no value for quantity, disable the plus button
                 if (s.toString().equals("")) {
                     mPlusBtn.setEnabled(false);
                     mPlusBtn.setColorFilter(getResources().getColor(R.color.disable_gray));
                 }
+
             }
         });
 
@@ -285,8 +288,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void buttonClicked_quantity(View view) {
-        //do the math to increase the quantity value, only allow 999999 as the max
         int quantity = Integer.parseInt(mQuantity.getText().toString());
+        int quntityStart = quantity;
+
+        //do the math to increase the quantity value, only allow 999999 as the max
         if (view.getId() == mPlusBtn.getId()) {
             quantity = quantity + 1;
         } else if (view.getId() == mMinusBtn.getId()) {
@@ -295,7 +300,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         //update quantity field with new value
+        int quantityEnd = quantity;
         mQuantity.setText(Integer.toString(quantity));
+
 
         //update button action
         if (quantity == 0 || mQuantity.getText().toString().isEmpty() || mQuantity.getText().toString().equals("")) {
@@ -305,6 +312,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mMinusBtn.setEnabled(true);
             mMinusBtn.setColorFilter(getResources().getColor(R.color.red));
         }
+
+        mProductHasChanged = true;
     }
 
     private void saveProduct() {
@@ -326,6 +335,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if (errorNum > 0) {
             mRequired.setTextColor(getResources().getColor(R.color.red));
+            Toast.makeText(this, getString(R.string.required_missing),
+                    Toast.LENGTH_LONG).show();
         } else {
             mRequired.setTextColor(getResources().getColor(R.color.secondaryTextColor));
 
@@ -344,7 +355,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if (!mProductHasChanged) {
                 //no values have been changed so don't make the insert or update call
                 Toast.makeText(this, getString(R.string.nothing_changed),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
                 // Determine if this is a new or existing product by checking if product uri is null or not
             } else if (mCurrentProductUri == null) {
                 // This is a NEW product, so insert a new product into the provider,
@@ -358,11 +369,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (newUri == null) {
                     // If the new content URI is null, then there was an error with insertion.
                     Toast.makeText(this, getString(R.string.editor_insert_product_failed),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 } else {
                     // Otherwise, the insertion was successful and we can display a toast.
                     Toast.makeText(this, getString(R.string.editor_insert_product_successful),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             } else {
 
@@ -377,11 +388,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (rowsAffected == 0) {
                     // If no rows were affected, then there was an error with the update.
                     Toast.makeText(this, getString(R.string.editor_update_product_failed),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 } else {
                     // Otherwise, the update was successful and we can display a toast.
                     Toast.makeText(this, getString(R.string.editor_update_product_successful),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -630,11 +641,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if (rowsDeleted == 0) {
                 // If no rows were deleted, then there was an error with the delete.
                 Toast.makeText(this, getString(R.string.editor_delete_product_failed),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             } else {
                 // Otherwise, the delete was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_delete_product_successful),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             }
         }
 
