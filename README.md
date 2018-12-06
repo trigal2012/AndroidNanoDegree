@@ -23,7 +23,7 @@ key learnings:
 * UI and workflow features to include:
   * message to indicate an empty database
   * Toast Measages to Warn user that data is not valid, Product was saved, Product was not saved
-  * Dialogs for Delete Confimration and Edit Cancellation
+  * Dialogs for Delete Confirmation and Edit Cancellation
   * buttons to increase/decrease quantity for the list row with validation to guard against negative value
   * Abilty to Edit Product details
   * Ability to Delete the Product
